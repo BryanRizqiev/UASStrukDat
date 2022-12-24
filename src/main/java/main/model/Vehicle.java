@@ -1,5 +1,7 @@
 package main.model;
 
+import java.sql.Timestamp;
+
 public class Vehicle {
 
     private int id;
@@ -9,10 +11,21 @@ public class Vehicle {
     private String nameOrBrand;
     private int pay;
     private boolean isOut;
-    private String inTime;
-    private String outTime;
+    private Timestamp inTime;
 
-    public Vehicle(int id, String nopol, String type, String color, String nameOrBrand, int pay, boolean isOut, String inTime, String outTime) {
+    private Timestamp outTime;
+
+    public Vehicle(int id, String nopol, String type, String color, int pay, boolean isOut, Timestamp inTime) {
+        this.id = id;
+        this.nopol = nopol;
+        this.type = type;
+        this.color = color;
+        this.pay = pay;
+        this.isOut = isOut;
+        this.inTime = inTime;
+    }
+
+    public Vehicle(int id, String nopol, String type, String color, String nameOrBrand, int pay, boolean isOut, Timestamp inTime) {
         this.id = id;
         this.nopol = nopol;
         this.type = type;
@@ -21,7 +34,6 @@ public class Vehicle {
         this.pay = pay;
         this.isOut = isOut;
         this.inTime = inTime;
-        this.outTime = outTime;
     }
 
     public int getId() {
@@ -80,24 +92,17 @@ public class Vehicle {
         isOut = out;
     }
 
-    public String getInTime() {
+    public Timestamp getInTime() {
         return inTime;
     }
 
-    public void setInTime(String inTime) {
+    public void setInTime(Timestamp inTime) {
         this.inTime = inTime;
-    }
-
-    public String getOutTime() {
-        return outTime;
-    }
-
-    public void setOutTime(String outTime) {
-        this.outTime = outTime;
     }
 
     @Override
     public String toString() {
         return this.nopol;
     }
+
 }

@@ -43,7 +43,7 @@ public class VehicleController {
     public void pop() {
         if (isEmpty()) {
             System.err.println("Stack kosong/underflow");
-            System.exit(1);
+            return;
         }
         --top;
     }
@@ -51,7 +51,7 @@ public class VehicleController {
     public void pop(String nopol) {
         if (isEmpty()) {
             System.err.println("Stack kosong/underflow");
-            System.exit(1);
+            return;
         }
         boolean isExist = false;
         for (int i = 0; i <= top; i++) {
@@ -77,6 +77,25 @@ public class VehicleController {
 
     public Vehicle[] getDatas() {
         return arr;
+    }
+    
+    public Vehicle getData(String nopol) throws Exception {
+        // ini bisa pakai binary search
+        for (int i = 0; i <= top; i++) {
+            if (arr[i].getNopol().equals(nopol)) {
+                return arr[i];
+            }
+        }
+        throw new Exception("Data tidak ada");
+    }
+
+    public boolean isExist(String nopol) {
+        for (int i = 0; i <= top; i++) {
+            if (arr[i].getNopol().equals(nopol)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void print() {
