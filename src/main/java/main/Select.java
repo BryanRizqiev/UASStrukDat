@@ -30,6 +30,7 @@ public class Select {
                 Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
                 vController.push(new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime));
             }
+            rs.close();
         } catch (SQLException exception) {
             System.out.println("Error: " + exception.getMessage());
         } catch (Exception exception) {

@@ -2,6 +2,7 @@ package main.model;
 
 import java.sql.Timestamp;
 
+// methodnya kurang
 public class Vehicle {
 
     private int id;
@@ -12,18 +13,7 @@ public class Vehicle {
     private int pay;
     private boolean isOut;
     private Timestamp inTime;
-
     private Timestamp outTime;
-
-    public Vehicle(int id, String nopol, String type, String color, int pay, boolean isOut, Timestamp inTime) {
-        this.id = id;
-        this.nopol = nopol;
-        this.type = type;
-        this.color = color;
-        this.pay = pay;
-        this.isOut = isOut;
-        this.inTime = inTime;
-    }
 
     public Vehicle(int id, String nopol, String type, String color, String nameOrBrand, int pay, boolean isOut, Timestamp inTime) {
         this.id = id;
@@ -98,6 +88,14 @@ public class Vehicle {
 
     public void setInTime(Timestamp inTime) {
         this.inTime = inTime;
+    }
+
+    public Timestamp getOutTime() {
+        return outTime;
+    }
+
+    public void setOutTime(Timestamp outTime) {
+        this.outTime = outTime;
     }
 
     @Override

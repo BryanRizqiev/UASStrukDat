@@ -7,6 +7,7 @@ import java.sql.*;
 public class SelectOne {
 
     public static void main(String[] args) {
+
         try {
             Connection conn = JDBCUtil.getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM vehicles WHERE nopol = ? LIMIT 1");
@@ -21,6 +22,7 @@ public class SelectOne {
                 System.out.println("kode karcis: " + kode + ", nopol:" + nopol);
             }
 
+            rs.close();
             preparedStatement.close();
             conn.close();
         } catch (SQLException exc) {

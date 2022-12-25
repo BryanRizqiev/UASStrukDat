@@ -31,6 +31,14 @@ public class VehicleController {
         return top + 1;
     }
 
+    public int size() {
+        return capacity;
+    }
+
+    public void clear() {
+        arr = new Vehicle[capacity];
+    }
+
     public void push(Vehicle vehicle) throws Exception {
         if (isFull()) {
             throw new Exception("Parkir penuh");
@@ -42,15 +50,16 @@ public class VehicleController {
 
     public void pop() {
         if (isEmpty()) {
-            System.err.println("Stack kosong/underflow");
+            System.out.println("Stack kosong/underflow");
             return;
         }
+        arr[top] = null;
         --top;
     }
 
     public void pop(String nopol) {
         if (isEmpty()) {
-            System.err.println("Stack kosong/underflow");
+            System.out.println("Stack kosong/underflow");
             return;
         }
         boolean isExist = false;
@@ -71,8 +80,18 @@ public class VehicleController {
         }
     }
 
+    private int getTop() {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == null) {
+                return i-1;
+            }
+        }
+        return arr.length;
+    }
+
     public void insertOrReplaceData(Vehicle[] arr) {
         this.arr = arr;
+        top = getTop();
     }
 
     public Vehicle[] getDatas() {
@@ -90,6 +109,7 @@ public class VehicleController {
     }
 
     public boolean isExist(String nopol) {
+        // ini bisa pakai binary search
         for (int i = 0; i <= top; i++) {
             if (arr[i].getNopol().equals(nopol)) {
                 return true;
