@@ -2,6 +2,8 @@ package main.controller;
 
 import main.model.Vehicle;
 
+import javax.swing.*;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 public class VehicleController {
@@ -57,27 +59,42 @@ public class VehicleController {
         --top;
     }
 
-    public void pop(String nopol) {
+    public void pop(String nopol) throws Exception {
         if (isEmpty()) {
             System.out.println("Stack kosong/underflow");
             return;
         }
-        boolean isExist = false;
         for (int i = 0; i <= top; i++) {
             if (arr[i].getNopol().equals(nopol)) {
-                isExist = true;
                 for (int j = i+1; j < arr.length; j++) {
                     arr[j-1] = arr[j];
                 }
                 arr[top] = null;
                 --top;
-                break;
+                return;
             }
         }
 
-        if (!isExist) {
-            System.out.println("Gak enek");
+        throw new Exception("Data tidak ada");
+    }
+
+    public void pop(int id) throws Exception {
+        if (isEmpty()) {
+            System.out.println("Stack kosong/underflow");
+            return;
         }
+        for (int i = 0; i <= top; i++) {
+            if (arr[i].getId() == id) {
+                for (int j = i+1; j < arr.length; j++) {
+                    arr[j-1] = arr[j];
+                }
+                arr[top] = null;
+                --top;
+                return;
+            }
+        }
+
+        throw new Exception("Data tidak ada");
     }
 
     private int getTop() {
@@ -129,4 +146,34 @@ public class VehicleController {
         System.out.println(Arrays.toString(arr));
     }
 
+    // bisa diperbaiki
+    public static int lengthArr(Vehicle[] vehicles) {
+        int i = 0;
+        int length = -1;
+        for (Vehicle vehicle: vehicles) {
+            if (vehicle == null) {
+                length = i;
+                break;
+            }
+            i++;
+        }
+        return length;
+    }
+
+
+    public static void main(String[] args) throws Exception {
+
+        VehicleController vController = new VehicleController(5);
+
+        try {
+            vController.push(new Vehicle(1, "A", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
+            vController.push(new Vehicle(2, "A", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
+            vController.printArr();
+            vController.pop(3);
+            vController.printArr();
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            JOptionPane.showMessageDialog(null, exception.getMessage());
+        }
+    }
 }

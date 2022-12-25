@@ -2,7 +2,7 @@ package main.model;
 
 import java.sql.Timestamp;
 
-// methodnya kurang
+// methodnya kurangc
 public class Vehicle {
 
     private int id;

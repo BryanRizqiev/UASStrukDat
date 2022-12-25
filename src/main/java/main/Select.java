@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class Select {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         VehicleController vController = new VehicleController(4);
 
@@ -37,7 +37,7 @@ public class Select {
             System.out.println("Error: " + exception.getMessage());
         }
 
-        // buat class query pakai static dan final
+        // buat class query pakai static dan final // begow
         vController.pop("AG_1_AA");
 
         try {
