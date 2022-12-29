@@ -1,23 +1,31 @@
 package main;
 
-import main.view.panelMasuk;
-import main.view.panelKeluar;
-import main.view.panelStack;
+import main.controller.VehicleController;
+import main.utility.SQLCommand;
+import main.view.PanelMasuk;
+import main.view.PanelKeluar;
+import main.view.PanelStack;
 
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class UI_Main extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form UI_Main
+     * Creates new form MainFrame
      */
-
     // Mencoba
+    VehicleController vehicleController = new VehicleController(100);
 
-
-    public UI_Main() {
+    public MainFrame() {
         initComponents();
-        src.setViewportView(new panelMasuk());
+        try {
+            SQLCommand.getAll(vehicleController);
+            src.setViewportView(new PanelMasuk(vehicleController));
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -39,6 +47,7 @@ public class UI_Main extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 800));
         getContentPane().add(src, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("Parkir Kendaraan");
@@ -78,21 +87,23 @@ public class UI_Main extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setPreferredSize(new Dimension(700, 600));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        src.setViewportView(new panelMasuk());
+        try {
+            src.setViewportView(new PanelMasuk(vehicleController));
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-    
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        src.setViewportView(new panelKeluar());
+        src.setViewportView(new PanelKeluar(vehicleController));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-    
+
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        src.setViewportView(new panelStack());
+        src.setViewportView(new PanelStack());
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
@@ -109,31 +120,34 @@ public class UI_Main extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UI_Main.class
+            java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UI_Main.class
+            java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UI_Main.class
+            java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UI_Main.class
+            java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UI_Main().setVisible(true);
+                new MainFrame().setVisible(true);
             }
         });
     }

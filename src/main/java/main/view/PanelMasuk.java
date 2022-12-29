@@ -1,8 +1,9 @@
 package main.view;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -10,15 +11,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import main.utility.JDBCUtil;
-import main.utility.SQLCommand;
 
-public class panelMasuk extends javax.swing.JPanel {
+import main.controller.VehicleController;
+import main.model.Vehicle;
+import main.utility.SQLCommand;
+import main.utility.Sorting;
+
+public class PanelMasuk extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
-    public panelMasuk() {
+    VehicleController vController;
+
+    public PanelMasuk(VehicleController vController) {
+        this.vController = vController;
         initComponents();
         updateTable();
     }
@@ -41,11 +48,14 @@ public class panelMasuk extends javax.swing.JPanel {
         btnSimpan = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtNopol1 = new javax.swing.JTextField();
         txtNopol2 = new javax.swing.JTextField();
         txtNopol3 = new javax.swing.JTextField();
+        labelNB = new javax.swing.JLabel();
+        txtNB = new javax.swing.JTextField();
+        labelNB1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -54,13 +64,13 @@ public class panelMasuk extends javax.swing.JPanel {
             }
         });
 
-        labelNopol.setText("No Polisi");
+        labelNopol.setText("No Polisi *");
 
-        labelTipe.setText("Tipe");
+        labelTipe.setText("Tipe *");
 
-        labelWarna.setText("Warna");
+        labelWarna.setText("Warna *");
 
-        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil", "Jet", "Tank" }));
+        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil" }));
 
         btnSimpan.setText("Masuk");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
@@ -71,20 +81,20 @@ public class panelMasuk extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Waktu Masuk"
+                "Plat", "Tipe", "Warna", "Nama / Brand", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -98,17 +108,39 @@ public class panelMasuk extends javax.swing.JPanel {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(70);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(4).setResizable(false);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
         }
-
-        jLabel1.setFont(new java.awt.Font("Inter", 3, 13)); // NOI18N
-        jLabel1.setText("*biaya parkir : Rp. 1000/Jam");
 
         jLabel2.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
         jLabel2.setText("Kendaraan Masuk");
+
+        labelNB.setText("Nama / Brand");
+
+        labelNB1.setText("Sort by: ");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plat", "Waktu masuk" }));
+        jComboBox1.setToolTipText("");
+        jComboBox1.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String choise = (String) jComboBox1.getSelectedItem();
+
+                if (choise.equals("Plat")) {
+                    Sorting.sort(vController.getDatas());
+                    updateTable();
+                } else {
+                    Sorting.sortTime(vController.getDatas());
+                    updateTable();
+                }
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -117,34 +149,35 @@ public class panelMasuk extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelNB1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelWarna)
-                                        .addComponent(labelTipe))
-                                    .addGap(83, 83, 83)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelNopol)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(122, 122, 122)
-                                            .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel2))
-                        .addGap(2, 2, 2)
-                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(labelWarna)
+                                .addComponent(labelTipe))
+                            .addGap(83, 83, 83)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2))
+                    .addComponent(labelNB)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelNopol)
+                        .addGap(69, 69, 69)
+                        .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -167,11 +200,15 @@ public class panelMasuk extends javax.swing.JPanel {
                     .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelWarna))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNB))
+                .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
-                    .addComponent(btnReset))
+                    .addComponent(btnReset)
+                    .addComponent(labelNB1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                 .addContainerGap())
@@ -181,10 +218,11 @@ public class panelMasuk extends javax.swing.JPanel {
         txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
-                warna = txtWarna.getText();
+                warna = txtWarna.getText(),
+                nameOrBrand = txtNB.getText();
 
         if (nopol.isEmpty() || warna.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
@@ -197,9 +235,11 @@ public class panelMasuk extends javax.swing.JPanel {
         }
 
         try {
-            SQLCommand.create(nopol, tipe, warna);
+            Vehicle vehicle = SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), vController);
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
+
+            System.out.println(vehicle.getNopol());
 
             txtNopol1.setText("");
             txtNopol2.setText("");
@@ -207,9 +247,9 @@ public class panelMasuk extends javax.swing.JPanel {
             cbtipe.setSelectedIndex(0);
             txtWarna.setText("");
         } catch (Exception ex) {
-            Logger.getLogger(panelMasuk.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelMasuk.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnSimpanActionPerformed
+    }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         txtNopol1.setText("");
@@ -223,17 +263,12 @@ public class panelMasuk extends javax.swing.JPanel {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
-            Connection conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM vehicles WHERE is_out = 0 ORDER BY in_time ASC";
-            PreparedStatement st = conn.prepareStatement(sql);
-            ResultSet res = st.executeQuery();
 
-            while (res.next()) {
-                String nopol = res.getString("nopol").replace("_", " ");
-                String tipe = res.getString("type");
-                String color = res.getString("color");
-                String inTime = res.getString("in_time");
-                dataModel.addRow(new Object[]{nopol, tipe, color, inTime});
+            Vehicle[] vehicles = vController.fetchDatas();
+
+            for (Vehicle data : vehicles) {
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(data.getInTime());
+                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timeStamp});
             }
 
         } catch (Exception e) {
@@ -257,13 +292,16 @@ public class panelMasuk extends javax.swing.JPanel {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JComboBox<String> cbtipe;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelNB;
+    private javax.swing.JLabel labelNB1;
     private javax.swing.JLabel labelNopol;
     private javax.swing.JLabel labelTipe;
     private javax.swing.JLabel labelWarna;
+    private javax.swing.JTextField txtNB;
     private javax.swing.JTextField txtNopol1;
     private javax.swing.JTextField txtNopol2;
     private javax.swing.JTextField txtNopol3;

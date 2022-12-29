@@ -10,15 +10,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+
+import main.controller.VehicleController;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
-public class panelKeluar extends javax.swing.JPanel {
+public class PanelKeluar extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
-    public panelKeluar() {
+    VehicleController vController;
+    public PanelKeluar(VehicleController vController) {
+        this.vController = vController;
         initComponents();
         updateTable();
     }
@@ -64,7 +68,7 @@ public class panelKeluar extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Waktu Keluar", "Bayar Parkir"
+                "Plat", "Tipe", "Warna", "Bayar", "Waktu Keluar"
             }
         ) {
             Class[] types = new Class [] {
@@ -84,8 +88,12 @@ public class panelKeluar extends javax.swing.JPanel {
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
+        // need fixing
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
         }
 
         jLabel1.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
@@ -133,25 +141,26 @@ public class panelKeluar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        String nopol = txtNopol.getText().replace(" ", "_");
 
-        if (nopol.isEmpty()) {
+        if (txtNopol.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
             return;
         }
 
-        if (!SQLCommand.isExist(nopol)) {
+        String nopol = txtNopol.getText().replace(" ", "_");
+
+        if (!vController.isExist(nopol)) {
             JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
             return;
         }
 
         try {
-            SQLCommand.updateIsOut(nopol);
+            SQLCommand.updateIsOut(nopol, vController);
             JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
             updateTable();
             txtNopol.setText("");
         } catch (Exception ex) {
-            Logger.getLogger(panelKeluar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelKeluar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
 
@@ -159,6 +168,8 @@ public class panelKeluar extends javax.swing.JPanel {
         txtNopol.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
+
+    // Lemot karena query
     private void updateTable() {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
@@ -172,11 +183,13 @@ public class panelKeluar extends javax.swing.JPanel {
                 String nopol = res.getString("nopol").replace("_", " "),
                         tipe = res.getString("type"),
                         color = res.getString("color"),
-                        outTime = res.getString("out_time"),
-                        bayar = res.getString("pay");
+                        bayar = "Rp." + res.getString("pay"),
+                        outTime = res.getString("out_time");
 
-                dataModel.addRow(new Object[]{nopol, tipe, color, outTime, bayar});
+                dataModel.addRow(new Object[]{nopol, tipe, color, bayar, outTime});
             }
+
+            conn.close(); st.close(); res.close();
 
         } catch (Exception e) {
             e.printStackTrace();
