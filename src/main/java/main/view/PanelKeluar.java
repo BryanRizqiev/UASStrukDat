@@ -13,12 +13,12 @@ import javax.swing.text.PlainDocument;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
-public class panelKeluar extends javax.swing.JPanel {
+public class PanelKeluar extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
-    public panelKeluar() {
+    public PanelKeluar() {
         initComponents();
         updateTable();
     }
@@ -151,7 +151,7 @@ public class panelKeluar extends javax.swing.JPanel {
             updateTable();
             txtNopol.setText("");
         } catch (Exception ex) {
-            Logger.getLogger(panelKeluar.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelKeluar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
 

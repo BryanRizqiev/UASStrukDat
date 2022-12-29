@@ -17,12 +17,12 @@ import main.controller.VehicleController;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
-public class panelStack extends javax.swing.JPanel {
+public class PanelStack extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
-    public panelStack() {
+    public PanelStack() {
         initComponents();
     }
 
