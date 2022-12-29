@@ -2,6 +2,7 @@ package main;
 
 import main.view.panelMasuk;
 import main.view.panelKeluar;
+import main.view.panelStack;
 
 public class UI_Main extends javax.swing.JFrame {
 
@@ -10,8 +11,8 @@ public class UI_Main extends javax.swing.JFrame {
      */
     public UI_Main() {
         initComponents();
-//        src.setViewportView(new panelShow());
-        setExtendedState(MAXIMIZED_BOTH);
+        src.setViewportView(new panelMasuk());
+//        setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -29,6 +30,8 @@ public class UI_Main extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().add(src, java.awt.BorderLayout.CENTER);
@@ -53,7 +56,19 @@ public class UI_Main extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Struktur Data");
+
+        jMenuItem3.setText("Sorting");
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Stack");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -64,10 +79,14 @@ public class UI_Main extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         src.setViewportView(new panelMasuk());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         src.setViewportView(new panelKeluar());
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+    
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        src.setViewportView(new panelStack());
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -83,21 +102,21 @@ public class UI_Main extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -118,6 +137,8 @@ public class UI_Main extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane src;
     // End of variables declaration//GEN-END:variables
 }

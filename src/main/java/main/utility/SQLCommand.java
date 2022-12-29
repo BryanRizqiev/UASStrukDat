@@ -24,7 +24,7 @@ public class SQLCommand {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static Timestamp ts = new Timestamp(System.currentTimeMillis());
 
-    public static void insert(String nopol, String type, String color) throws Exception {
+    public static void create(String nopol, String type, String color) throws Exception {
 
         try {
             conn = JDBCUtil.getConnection();
@@ -33,24 +33,10 @@ public class SQLCommand {
             stmnt.setString(2, type);
             stmnt.setString(3, color);
             stmnt.executeUpdate();
-            System.out.println("Kendaraan " + type + " masuk ke parkiran");
+            System.out.println("Plat " + nopol.replace("_", " ") + " masuk ke parkiran");
 
         } catch (SQLException exception) {
             throw new Exception(exception);
-        }
-    }
-
-    public static boolean isExist(String nopol) {
-        try {
-            conn = JDBCUtil.getConnection();
-            PreparedStatement stmnt = conn.prepareStatement(SELECT_ONE_QUERY_BY_NOPOL);
-            stmnt.setString(1, nopol);
-            ResultSet res = stmnt.executeQuery();
-            return res.next() && res.getInt(1) > 0;
-
-        } catch (SQLException e) {
-            Logger.getLogger(SQLCommand.class.getName()).log(Level.SEVERE, null, e);
-            return false;
         }
     }
 
@@ -86,6 +72,20 @@ public class SQLCommand {
             System.out.println("Success");
         } catch (SQLException exception) {
             throw new Exception(exception);
+        }
+    }
+
+    public static boolean isExist(String nopol) {
+        try {
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(SELECT_ONE_QUERY_BY_NOPOL);
+            stmnt.setString(1, nopol);
+            ResultSet res = stmnt.executeQuery();
+            return res.next() && res.getInt(1) > 0;
+
+        } catch (SQLException e) {
+            Logger.getLogger(SQLCommand.class.getName()).log(Level.SEVERE, null, e);
+            return false;
         }
     }
 
@@ -143,7 +143,7 @@ public class SQLCommand {
             stmnt.close();
             conn.close();
 
-            System.out.println("Success");
+//            System.out.println("Success");
         } catch (SQLException exception) {
             throw new Exception(exception.getMessage());
         }

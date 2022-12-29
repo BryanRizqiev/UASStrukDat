@@ -1,23 +1,29 @@
 package main.view;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+import main.controller.VehicleController;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
-public class panelKeluar extends javax.swing.JPanel {
+public class panelStack extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
-    public panelKeluar() {
+    public panelStack() {
         initComponents();
-        updateTable();
     }
 
     /**
@@ -31,10 +37,12 @@ public class panelKeluar extends javax.swing.JPanel {
 
         btnReset = new javax.swing.JButton();
         labelNopol = new javax.swing.JLabel();
-        txtNopol = new javax.swing.JTextField();
+        txtStack = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -43,46 +51,25 @@ public class panelKeluar extends javax.swing.JPanel {
             }
         });
 
-        labelNopol.setText("No Polisi");
+        labelNopol.setText("Jumlah Stack");
 
-        btnSimpan.setText("Keluar");
+        btnSimpan.setText("Submit");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSimpanActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Plat", "Tipe", "Warna", "Waktu Keluar", "Bayar Parkir"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
+        jLabel1.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
+        jLabel1.setText("Stack");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
+        jLabel2.setText("Total Data : ");
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(100);
-        }
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Result:\n");
+        jScrollPane2.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,89 +79,119 @@ public class panelKeluar extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelNopol)
-                        .addGap(68, 68, 68)
-                        .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelNopol)
+                        .addGap(68, 68, 68)
+                        .addComponent(txtStack, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(168, 168, 168)
+                        .addComponent(jLabel1))
+                    .addComponent(jLabel2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelNopol))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
                     .addComponent(btnReset))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(72, Short.MAX_VALUE))
         );
+
+        try {
+            jLabel2.setText("Total Data : " + SQLCommand.countData());
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        String nopol = txtNopol.getText().replace(" ", "_");
-
-        if (nopol.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Isi semua form");
-            return;
-        }
-
-        if (!SQLCommand.isExist(nopol)) {
-            JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
-            return;
-        }
-
         try {
-            SQLCommand.updateIsOut(nopol);
-            JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkir");
-            updateTable();
-        } catch (Exception ex) {
-            Logger.getLogger(panelKeluar.class.getName()).log(Level.SEVERE, null, ex);
+
+            String stack = txtStack.getText();
+            if (stack.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Isi semua form");
+                return;
+            }
+
+            jTextArea1.setText("Result:\n");
+
+            // Menambahkan listener untuk menangkap output dari System.out
+            PrintStream printStream = new PrintStream(new CustomOutputStream(jTextArea1));
+            System.setOut(printStream);
+            System.setErr(printStream);
+
+            VehicleController vController = new VehicleController(Integer.parseInt(stack));
+
+            SQLCommand.getAll(vController);
+            vController.printArr();
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        txtNopol.setText("");
+        txtStack.setText("");
+        jTextArea1.setText("Result:\n");
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void updateTable() {
-        try {
-            DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
-            dataModel.setRowCount(0);
-            Connection conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM vehicles WHERE is_out = 1 ORDER BY out_time ASC";
-            PreparedStatement st = conn.prepareStatement(sql);
-            ResultSet res = st.executeQuery();
+// Membuat kelas yang meng-override kelas OutputStream
+    public static class CustomOutputStream extends OutputStream {
 
-            while (res.next()) {
-                String nopol = res.getString("nopol").replace("_", " "),
-                        tipe = res.getString("type"),
-                        color = res.getString("color"),
-                        outTime = res.getString("out_time"),
-                        bayar = res.getString("pay");
+        private JTextArea textArea;
 
-                dataModel.addRow(new Object[]{nopol, tipe, color, outTime, bayar});
+        public CustomOutputStream(JTextArea textArea) {
+            this.textArea = textArea;
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            // Append text ke JTextArea
+            textArea.append(String.valueOf((char) b));
+            // Scroll ke bawah agar selalu terlihat output terbaru
+            textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
+    }
+
+    // Membuat kelas yang meng-override kelas AbstractDocument
+    public static class UpperCaseDocument extends PlainDocument {
+
+        @Override
+        public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+            if (str == null) {
+                return;
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            super.insertString(offs, str.toUpperCase(), a);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelNopol;
-    private javax.swing.JTextField txtNopol;
+    private javax.swing.JTextField txtStack;
     // End of variables declaration//GEN-END:variables
 }
