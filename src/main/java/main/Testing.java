@@ -32,24 +32,23 @@ public class Testing {
 
             // init (query all)
             VehicleController vController = new VehicleController(50);
-
             SQLCommand.getAll(vController);
-//            vController.printArr();
 
             // in
-//            SQLCommand.create("AG_0084_YNTKTS", "Motor", "Merah", "", vController);
-//            vController.printArr();
+            SQLCommand.create("AG_0084_YNTKTS", "Motor", "Merah", "", vController);
+            vController.printArr();
 
             // query single
-            // jam server kurleb -7 dari sini
             Vehicle vehicle = SQLCommand.getByNopol("AG_T4MB4H_WS");
+
+            // lama parkir
             timestamp.setHours(timestamp.getHours() - 7);
             int different = (int) compareTwoTimeStamps(vehicle.getInTime(), timestamp);
             different = Math.abs(different);
             System.out.println(different);
 
             // out
-//            SQLCommand.updateIsOut("AG_0084_YNTKTS", vController);
+            SQLCommand.updateIsOut("AG_0084_YNTKTS", vController);
 
 //            vController.printArr();
 //            Sorting.sort(vController.getDatas());
