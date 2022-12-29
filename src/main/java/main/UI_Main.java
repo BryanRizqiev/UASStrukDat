@@ -11,6 +11,10 @@ public class UI_Main extends javax.swing.JFrame {
     /**
      * Creates new form UI_Main
      */
+
+    // Mencoba
+
+
     public UI_Main() {
         initComponents();
         src.setViewportView(new panelMasuk());

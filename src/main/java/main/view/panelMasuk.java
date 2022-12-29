@@ -34,7 +34,6 @@ public class panelMasuk extends javax.swing.JPanel {
 
         btnReset = new javax.swing.JButton();
         labelNopol = new javax.swing.JLabel();
-        txtNopol = new javax.swing.JTextField();
         labelTipe = new javax.swing.JLabel();
         txtWarna = new javax.swing.JTextField();
         labelWarna = new javax.swing.JLabel();
@@ -43,12 +42,10 @@ public class panelMasuk extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-
         jLabel2 = new javax.swing.JLabel();
-
         txtNopol1 = new javax.swing.JTextField();
         txtNopol2 = new javax.swing.JTextField();
-
+        txtNopol3 = new javax.swing.JTextField();
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -63,7 +60,7 @@ public class panelMasuk extends javax.swing.JPanel {
 
         labelWarna.setText("Warna");
 
-        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil" }));
+        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil", "Jet", "Tank" }));
 
         btnSimpan.setText("Masuk");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
@@ -73,21 +70,21 @@ public class panelMasuk extends javax.swing.JPanel {
         });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null}
-                },
-                new String [] {
-                        "Plat", "Tipe", "Warna", "Waktu Masuk"
-                }
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Plat", "Tipe", "Warna", "Waktu Masuk"
+            }
         ) {
             Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                    false, false, true, true
+                false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -126,21 +123,28 @@ public class panelMasuk extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel2)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelNopol)
-                                .addGap(68, 68, 68)
-                                .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelWarna)
-                                    .addComponent(labelTipe))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtWarna, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                                    .addComponent(cbtipe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelWarna)
+                                        .addComponent(labelTipe))
+                                    .addGap(83, 83, 83)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelNopol)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(122, 122, 122)
+                                            .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2))
+                        .addGap(2, 2, 2)
+                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -149,10 +153,12 @@ public class panelMasuk extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNopol))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelNopol)
+                    .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelTipe)
                     .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -167,15 +173,16 @@ public class panelMasuk extends javax.swing.JPanel {
                     .addComponent(btnSimpan)
                     .addComponent(btnReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        txtNopol.setDocument(new UpperCaseDocument());
+        txtNopol1.setDocument(new UpperCaseDocument());
+        txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        String nopol = txtNopol.getText().replace(" ", "_"),
+        String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
                 warna = txtWarna.getText();
 
@@ -194,7 +201,9 @@ public class panelMasuk extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
 
-            txtNopol.setText("");
+            txtNopol1.setText("");
+            txtNopol2.setText("");
+            txtNopol3.setText("");
             cbtipe.setSelectedIndex(0);
             txtWarna.setText("");
         } catch (Exception ex) {
@@ -203,7 +212,9 @@ public class panelMasuk extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        txtNopol.setText("");
+        txtNopol1.setText("");
+        txtNopol2.setText("");
+        txtNopol3.setText("");
         cbtipe.setSelectedIndex(0);
         txtWarna.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
@@ -253,9 +264,9 @@ public class panelMasuk extends javax.swing.JPanel {
     private javax.swing.JLabel labelNopol;
     private javax.swing.JLabel labelTipe;
     private javax.swing.JLabel labelWarna;
-    private javax.swing.JTextField txtNopol;
     private javax.swing.JTextField txtNopol1;
     private javax.swing.JTextField txtNopol2;
+    private javax.swing.JTextField txtNopol3;
     private javax.swing.JTextField txtWarna;
     // End of variables declaration//GEN-END:variables
 }
