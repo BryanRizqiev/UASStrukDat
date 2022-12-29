@@ -114,6 +114,12 @@ public class VehicleController {
     public Vehicle[] getDatas() {
         return arr;
     }
+
+    public Vehicle[] fetchDatas() {
+        Vehicle[] vehicles = new Vehicle[count()];
+        if (count() >= 0) System.arraycopy(arr, 0, vehicles, 0, count());
+        return vehicles;
+    }
     
     public Vehicle getData(String nopol) throws Exception {
         // ini bisa pakai binary search
@@ -163,14 +169,18 @@ public class VehicleController {
 
     public static void main(String[] args) throws Exception {
 
-        VehicleController vController = new VehicleController(5);
+        VehicleController vController = new VehicleController(10);
 
         try {
             vController.push(new Vehicle(1, "A", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
-            vController.push(new Vehicle(2, "A", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
-            vController.printArr();
-            vController.pop(3);
-            vController.printArr();
+            vController.push(new Vehicle(2, "B", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
+            vController.push(new Vehicle(3, "C", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
+            vController.push(new Vehicle(4, "D", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
+            vController.push(new Vehicle(5, "E", "B", "C", "D", 2, false, new Timestamp(System.currentTimeMillis())));
+
+            Vehicle[] vehicles = vController.fetchDatas();
+
+            System.out.println(Arrays.toString(vehicles));
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
             JOptionPane.showMessageDialog(null, exception.getMessage());

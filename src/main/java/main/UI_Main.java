@@ -3,6 +3,8 @@ package main;
 import main.view.panelMasuk;
 import main.view.panelKeluar;
 
+import java.awt.*;
+
 public class UI_Main extends javax.swing.JFrame {
 
     /**
@@ -10,8 +12,7 @@ public class UI_Main extends javax.swing.JFrame {
      */
     public UI_Main() {
         initComponents();
-//        src.setViewportView(new panelShow());
-        setExtendedState(MAXIMIZED_BOTH);
+        src.setViewportView(new panelMasuk());
     }
 
     /**
@@ -57,6 +58,8 @@ public class UI_Main extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
+
+        setPreferredSize(new Dimension(700, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
