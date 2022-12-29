@@ -83,7 +83,7 @@ public class panelMasuk extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Nama/Brand", "Waktu Masuk"
+                "Plat", "Tipe", "Warna", "Nama / Brand", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {
@@ -119,7 +119,7 @@ public class panelMasuk extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
         jLabel2.setText("Kendaraan Masuk");
 
-        labelNB.setText("Nama/Brand");
+        labelNB.setText("Nama / Brand");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -210,9 +210,11 @@ public class panelMasuk extends javax.swing.JPanel {
 //            return;
 //        }
         try {
-            SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), vController);
+            Vehicle vehicle = SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), vController);
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
+
+            System.out.println(vehicle.getNopol());
 
             txtNopol1.setText("");
             txtNopol2.setText("");

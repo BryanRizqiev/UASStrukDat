@@ -40,7 +40,7 @@ public class SQLCommand {
         }
     }
 
-    public static void create(String nopol, String type, String color, String name_or_brand, VehicleController vController) throws Exception {
+    public static Vehicle create(String nopol, String type, String color, String name_or_brand, VehicleController vController) throws Exception {
         if (vController.isFull()) {
             throw new Exception("Parkir penuh");
         }
@@ -69,7 +69,7 @@ public class SQLCommand {
 
             vController.push(vehicle);
 
-            System.out.println("Success");
+            return vehicle;
         } catch (SQLException exception) {
             throw new Exception(exception);
         }
