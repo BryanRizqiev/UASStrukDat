@@ -1,8 +1,9 @@
 package main.model;
 
 import java.sql.Timestamp;
+import java.util.Vector;
 
-// methodnya kurangc
+// methodnya kurang
 public class Vehicle {
 
     private int id;
@@ -15,6 +16,7 @@ public class Vehicle {
     private Timestamp inTime;
     private Timestamp outTime;
 
+    // isOut little bit useless
     public Vehicle(int id, String nopol, String type, String color, String nameOrBrand, int pay, boolean isOut, Timestamp inTime) {
         this.id = id;
         this.nopol = nopol;
@@ -96,6 +98,18 @@ public class Vehicle {
 
     public void setOutTime(Timestamp outTime) {
         this.outTime = outTime;
+    }
+
+    public Vector<Object> getDataVehicleIn() {
+        Vector<Object> data = new Vector<>();
+        data.add(id);
+        data.add(nopol);
+        data.add(type);
+        data.add(color);
+        data.add(nameOrBrand);
+        data.add(pay);
+        data.add(inTime);
+        return data;
     }
 
     @Override

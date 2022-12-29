@@ -43,7 +43,12 @@ public class panelMasuk extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+
         jLabel2 = new javax.swing.JLabel();
+
+        txtNopol1 = new javax.swing.JTextField();
+        txtNopol2 = new javax.swing.JTextField();
+
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -68,21 +73,21 @@ public class panelMasuk extends javax.swing.JPanel {
         });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Plat", "Tipe", "Warna", "Waktu Masuk"
-            }
+                new Object [][] {
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String [] {
+                        "Plat", "Tipe", "Warna", "Waktu Masuk"
+                }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                    false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -249,6 +254,8 @@ public class panelMasuk extends javax.swing.JPanel {
     private javax.swing.JLabel labelTipe;
     private javax.swing.JLabel labelWarna;
     private javax.swing.JTextField txtNopol;
+    private javax.swing.JTextField txtNopol1;
+    private javax.swing.JTextField txtNopol2;
     private javax.swing.JTextField txtWarna;
     // End of variables declaration//GEN-END:variables
 }
