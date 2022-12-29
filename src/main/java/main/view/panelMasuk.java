@@ -60,7 +60,7 @@ public class panelMasuk extends javax.swing.JPanel {
 
         labelWarna.setText("Warna");
 
-        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil", "Jet", "Tank" }));
+        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil" }));
 
         btnSimpan.setText("Masuk");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
@@ -111,8 +111,8 @@ public class panelMasuk extends javax.swing.JPanel {
         jLabel2.setText("Kendaraan Masuk");
 
         txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNopol1KeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNopol1KeyPressed(evt);
             }
         });
 
@@ -225,11 +225,11 @@ public class panelMasuk extends javax.swing.JPanel {
         txtWarna.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
-        if (txtNopol1.getText().length() > 1) {
+    private void txtNopol1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyPressed
+        if (txtNopol1.getText().length() > 0) {
             txtNopol2.requestFocus();
         }
-    }//GEN-LAST:event_txtNopol1KeyReleased
+    }//GEN-LAST:event_txtNopol1KeyPressed
 
     private void updateTable() {
         try {
