@@ -9,8 +9,8 @@ public class JDBCUtil {
     public static Connection getConnection() throws SQLException {
         String hostNPort = "103.171.85.233:3306";
         String database = "ParkirDB";
-        String user = "rahasia";
-        String password = "rahasia";
+        String user = "user";
+        String password = "password";
 
         return DriverManager.getConnection("jdbc:mysql://" + hostNPort + "/" + database + "?useSSL=false", user, password);
     }
