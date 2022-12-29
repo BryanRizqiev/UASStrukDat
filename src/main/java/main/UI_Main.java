@@ -6,20 +6,24 @@ import main.view.panelKeluar;
 import main.view.panelStack;
 
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UI_Main extends javax.swing.JFrame {
 
     /**
      * Creates new form UI_Main
      */
-
     // Mencoba
-
     VehicleController vehicleController = new VehicleController(100);
 
     public UI_Main() {
         initComponents();
-        src.setViewportView(new panelMasuk(vehicleController));
+        try {
+            src.setViewportView(new panelMasuk(vehicleController));
+        } catch (Exception ex) {
+            Logger.getLogger(UI_Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -86,13 +90,17 @@ public class UI_Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        src.setViewportView(new panelMasuk(vehicleController));
+        try {
+            src.setViewportView(new panelMasuk(vehicleController));
+        } catch (Exception ex) {
+            Logger.getLogger(UI_Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-    
+
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         src.setViewportView(new panelKeluar());
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-    
+
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         src.setViewportView(new panelStack());
     }//GEN-LAST:event_jMenuItem4ActionPerformed
@@ -111,21 +119,21 @@ public class UI_Main extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                    
+
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UI_Main.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);

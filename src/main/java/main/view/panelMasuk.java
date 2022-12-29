@@ -22,7 +22,6 @@ public class panelMasuk extends javax.swing.JPanel {
     /**
      * Creates new form panelCreate
      */
-
     VehicleController vController;
 
     public panelMasuk(VehicleController vController) throws Exception {
@@ -55,6 +54,8 @@ public class panelMasuk extends javax.swing.JPanel {
         txtNopol1 = new javax.swing.JTextField();
         txtNopol2 = new javax.swing.JTextField();
         txtNopol3 = new javax.swing.JTextField();
+        labelNB = new javax.swing.JLabel();
+        txtNB = new javax.swing.JTextField();
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -63,11 +64,11 @@ public class panelMasuk extends javax.swing.JPanel {
             }
         });
 
-        labelNopol.setText("No Polisi");
+        labelNopol.setText("No Polisi *");
 
-        labelTipe.setText("Tipe");
+        labelTipe.setText("Tipe *");
 
-        labelWarna.setText("Warna");
+        labelWarna.setText("Warna *");
 
         cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil" }));
 
@@ -80,20 +81,20 @@ public class panelMasuk extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Waktu Masuk"
+                "Plat", "Tipe", "Warna", "Nama/Brand", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -110,20 +111,19 @@ public class panelMasuk extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(100);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(100);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(4).setResizable(false);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(100);
         }
 
         jLabel1.setFont(new java.awt.Font("Inter", 3, 13)); // NOI18N
-        jLabel1.setText("*biaya parkir : Rp. 1000/Jam");
+        jLabel1.setText("Biaya parkir : Rp. 1000/Jam");
 
         jLabel2.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
         jLabel2.setText("Kendaraan Masuk");
 
-        txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNopol1KeyPressed(evt);
-            }
-        });
+        labelNB.setText("Nama/Brand");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -138,27 +138,25 @@ public class panelMasuk extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelWarna)
-                                        .addComponent(labelTipe))
-                                    .addGap(83, 83, 83)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelNopol)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(122, 122, 122)
-                                            .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel2))
-                        .addGap(2, 2, 2)
+                                .addComponent(labelWarna)
+                                .addComponent(labelTipe))
+                            .addGap(83, 83, 83)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2))
+                    .addComponent(labelNB)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelNopol)
+                        .addGap(69, 69, 69)
+                        .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -182,6 +180,10 @@ public class panelMasuk extends javax.swing.JPanel {
                     .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelWarna))
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNB))
+                .addGap(34, 34, 34)
                 .addComponent(jLabel1)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -196,10 +198,11 @@ public class panelMasuk extends javax.swing.JPanel {
         txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
-                warna = txtWarna.getText();
+                warna = txtWarna.getText(),
+                nameOrBrand = txtNB.getText();
 
         if (nopol.isEmpty() || warna.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
@@ -210,9 +213,8 @@ public class panelMasuk extends javax.swing.JPanel {
 //            JOptionPane.showMessageDialog(this, "Kendaraan sudah berada di parkiran");
 //            return;
 //        }
-
         try {
-            SQLCommand.create(nopol, tipe, warna, "", vController);
+            SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), vController);
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
 
@@ -234,12 +236,6 @@ public class panelMasuk extends javax.swing.JPanel {
         txtWarna.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void txtNopol1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyPressed
-        if (txtNopol1.getText().length() > 0) {
-            txtNopol2.requestFocus();
-        }
-    }//GEN-LAST:event_txtNopol1KeyPressed
-
     private void updateTable() {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
@@ -248,7 +244,7 @@ public class panelMasuk extends javax.swing.JPanel {
             Vehicle[] vehicles = vController.fetchDatas();
 
             for (Vehicle data : vehicles) {
-                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getInTime()});
+                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), data.getInTime()});
             }
 
         } catch (Exception e) {
@@ -276,9 +272,11 @@ public class panelMasuk extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelNB;
     private javax.swing.JLabel labelNopol;
     private javax.swing.JLabel labelTipe;
     private javax.swing.JLabel labelWarna;
+    private javax.swing.JTextField txtNB;
     private javax.swing.JTextField txtNopol1;
     private javax.swing.JTextField txtNopol2;
     private javax.swing.JTextField txtNopol3;
