@@ -3,6 +3,7 @@ package main.view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -10,6 +11,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+
+import main.controller.VehicleController;
+import main.model.Vehicle;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
@@ -18,7 +22,12 @@ public class panelMasuk extends javax.swing.JPanel {
     /**
      * Creates new form panelCreate
      */
-    public panelMasuk() {
+
+    VehicleController vController;
+
+    public panelMasuk(VehicleController vController) throws Exception {
+        this.vController = vController;
+        SQLCommand.getAll(vController);
         initComponents();
         updateTable();
     }
@@ -181,7 +190,7 @@ public class panelMasuk extends javax.swing.JPanel {
         txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
                 warna = txtWarna.getText();
@@ -191,13 +200,13 @@ public class panelMasuk extends javax.swing.JPanel {
             return;
         }
 
-        if (SQLCommand.isExist(nopol)) {
-            JOptionPane.showMessageDialog(this, "Kendaraan sudah berada di parkiran");
-            return;
-        }
+//        if (SQLCommand.isExist(nopol)) {
+//            JOptionPane.showMessageDialog(this, "Kendaraan sudah berada di parkiran");
+//            return;
+//        }
 
         try {
-            SQLCommand.create(nopol, tipe, warna);
+            SQLCommand.create(nopol, tipe, warna, "", vController);
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
 
@@ -209,7 +218,7 @@ public class panelMasuk extends javax.swing.JPanel {
         } catch (Exception ex) {
             Logger.getLogger(panelMasuk.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnSimpanActionPerformed
+    }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         txtNopol1.setText("");
@@ -223,17 +232,11 @@ public class panelMasuk extends javax.swing.JPanel {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
-            Connection conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM vehicles WHERE is_out = 0 ORDER BY in_time ASC";
-            PreparedStatement st = conn.prepareStatement(sql);
-            ResultSet res = st.executeQuery();
 
-            while (res.next()) {
-                String nopol = res.getString("nopol").replace("_", " ");
-                String tipe = res.getString("type");
-                String color = res.getString("color");
-                String inTime = res.getString("in_time");
-                dataModel.addRow(new Object[]{nopol, tipe, color, inTime});
+            Vehicle[] vehicles = vController.fetchDatas();
+
+            for (Vehicle data : vehicles) {
+                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getInTime()});
             }
 
         } catch (Exception e) {

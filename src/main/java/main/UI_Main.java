@@ -1,5 +1,6 @@
 package main;
 
+import main.controller.VehicleController;
 import main.view.panelMasuk;
 import main.view.panelKeluar;
 import main.view.panelStack;
@@ -14,10 +15,11 @@ public class UI_Main extends javax.swing.JFrame {
 
     // Mencoba
 
+    VehicleController vehicleController = new VehicleController(100);
 
     public UI_Main() {
         initComponents();
-        src.setViewportView(new panelMasuk());
+        src.setViewportView(new panelMasuk(vehicleController));
     }
 
     /**
@@ -84,7 +86,7 @@ public class UI_Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        src.setViewportView(new panelMasuk());
+        src.setViewportView(new panelMasuk(vehicleController));
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
