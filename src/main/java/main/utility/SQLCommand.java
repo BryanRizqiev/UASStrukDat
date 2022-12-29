@@ -4,6 +4,9 @@ import main.controller.VehicleController;
 import main.model.Vehicle;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SQLCommand {
 
@@ -14,7 +17,42 @@ public class SQLCommand {
     private static final String SELECT_ONE_QUERY_BY_NOPOL = "SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1;";
     private static final String SELECT_ONE_QUERY_BY_ID = "SELECT * FROM vehicles WHERE id = ? AND is_out = 0 LIMIT 1;";
     private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1 WHERE is_out = 0 AND nopol = ? LIMIT 1;";
+    private static final String UPDATE_OUT_BY_NOPOL_OUTTIME = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
     private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1 WHERE is_out = 0 AND id = ?;";
+    private static final String INSERT_SQL = "INSERT INTO vehicles (nopol, type, color) VALUES (?, ?, ?);";
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+    public static void insert(String nopol, String type, String color) throws Exception {
+
+        try {
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(INSERT_SQL);
+            stmnt.setString(1, nopol);
+            stmnt.setString(2, type);
+            stmnt.setString(3, color);
+            stmnt.executeUpdate();
+            System.out.println("Kendaraan " + type + " masuk ke parkiran");
+
+        } catch (SQLException exception) {
+            throw new Exception(exception);
+        }
+    }
+
+    public static boolean isExist(String nopol) {
+        try {
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(SELECT_ONE_QUERY_BY_NOPOL);
+            stmnt.setString(1, nopol);
+            ResultSet res = stmnt.executeQuery();
+            return res.next() && res.getInt(1) > 0;
+
+        } catch (SQLException e) {
+            Logger.getLogger(SQLCommand.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+    }
 
     public static void create(String nopol, String type, String color, String name_or_brand, VehicleController vController) throws Exception {
         if (vController.isFull()) {
@@ -39,7 +77,9 @@ public class SQLCommand {
                 throw new Exception("Tidak tau error apa");
             }
 
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             vController.push(vehicle);
 
@@ -47,6 +87,24 @@ public class SQLCommand {
         } catch (SQLException exception) {
             throw new Exception(exception);
         }
+    }
+
+    public static void getAll() {
+        try {
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(SELECT_ALL_QUERY);
+            ResultSet rs = stmnt.executeQuery();
+
+            if (!rs.next()) {
+                throw new Exception("Data tidak ada");
+            }
+
+            while (rs.next()) {
+
+            }
+        } catch (Exception e) {
+        }
+
     }
 
     // rs.close() jangan lupa
@@ -81,7 +139,9 @@ public class SQLCommand {
                 vController.push(new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime));
             }
 
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             System.out.println("Success");
         } catch (SQLException exception) {
@@ -111,7 +171,9 @@ public class SQLCommand {
             Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
             vehicle = new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime);
 
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             return vehicle;
         } catch (SQLException exception) {
@@ -141,7 +203,9 @@ public class SQLCommand {
             Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
             vehicle = new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime);
 
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             return vehicle;
         } catch (SQLException exception) {
@@ -150,6 +214,22 @@ public class SQLCommand {
     }
 
     public static void update() {
+
+    }
+
+    public static void updateIsOut(String nopol) throws Exception {
+        try {
+
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(UPDATE_OUT_BY_NOPOL_OUTTIME);
+            stmnt.setString(1, sdf.format(ts));
+            stmnt.setString(2, nopol);
+            stmnt.executeUpdate();
+            System.out.println("Plat " + nopol.replace("_", " ") + " keluar dari parkiran");
+
+        } catch (SQLException exception) {
+            throw new Exception(exception);
+        }
 
     }
 
@@ -165,7 +245,8 @@ public class SQLCommand {
             }
 
             vController.pop(nopol);
-            stmnt.close(); conn.close();
+            stmnt.close();
+            conn.close();
 
             System.out.println("Success");
         } catch (SQLException exception) {
@@ -184,7 +265,8 @@ public class SQLCommand {
             }
 
             vController.pop(id);
-            stmnt.close(); conn.close();
+            stmnt.close();
+            conn.close();
 
             System.out.println("Success");
         } catch (SQLException exception) {
@@ -205,7 +287,9 @@ public class SQLCommand {
 
             totalRows = rs.getInt("total");
 
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             return totalRows;
         } catch (SQLException exception) {

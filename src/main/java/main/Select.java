@@ -12,9 +12,7 @@ public class Select {
 
         VehicleController vController = new VehicleController(4);
 
-        try (Connection conn = JDBCUtil.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM vehicles WHERE is_out = 0");
-        ) {
+        try (Connection conn = JDBCUtil.getConnection(); PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM vehicles WHERE is_out = 0")) {
             ResultSet rs = preparedStatement.executeQuery();
             if (!rs.next()) {
                 throw new SQLException("Data tidak ada");

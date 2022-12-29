@@ -10,7 +10,7 @@ public class JDBCUtil {
         String hostNPort = "103.171.85.233:3306";
         String database = "ParkirDB";
         String user = "user";
-        String password = "password";
+        String password = "pass";
 
         return DriverManager.getConnection("jdbc:mysql://" + hostNPort + "/" + database + "?useSSL=false", user, password);
     }
