@@ -16,7 +16,7 @@ public class SQLCommand {
     private static final String SELECT_ALL_QUERY = "SELECT * FROM vehicles WHERE is_out = 0 ORDER BY in_time ASC;";
     private static final String SELECT_ONE_QUERY_BY_NOPOL = "SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1;";
     private static final String SELECT_ONE_QUERY_BY_ID = "SELECT * FROM vehicles WHERE id = ? AND is_out = 0 LIMIT 1;";
-    private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1 WHERE is_out = 0 AND nopol = ? LIMIT 1;";
+    private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
     private static final String UPDATE_OUT_BY_NOPOL_OUTTIME = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
     private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1 WHERE is_out = 0 AND id = ?;";
     private static final String INSERT_SQL = "INSERT INTO vehicles (nopol, type, color) VALUES (?, ?, ?);";
@@ -236,10 +236,14 @@ public class SQLCommand {
 
     public static void updateIsOut(String nopol, VehicleController vController) throws Exception {
 
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        now.setHours(now.getHours() - 7);
+
         try {
             conn = JDBCUtil.getConnection();
             PreparedStatement stmnt = conn.prepareStatement(UPDATE_OUT_BY_NOPOL);
-            stmnt.setString(1, nopol);
+            stmnt.setTimestamp(1, now);
+            stmnt.setString(2, nopol);
             int affected = stmnt.executeUpdate();
             if (affected == 0) {
                 throw new Exception("Tidak ada update");
