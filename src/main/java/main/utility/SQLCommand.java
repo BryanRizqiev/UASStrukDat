@@ -110,6 +110,7 @@ public class SQLCommand {
     // rs.close() jangan lupa
     public static void getAll(VehicleController vController) throws Exception {
         try {
+            vController.clear();
             int totalRows = countData();
             if (totalRows > vController.size()) {
                 throw new Exception("Kapasitas tempat parkir (stack) tidak mencukupi");

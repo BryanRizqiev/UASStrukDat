@@ -39,6 +39,7 @@ public class VehicleController {
 
     public void clear() {
         arr = new Vehicle[capacity];
+        top = -1;
     }
 
     public void push(Vehicle vehicle) throws Exception {

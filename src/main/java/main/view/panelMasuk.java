@@ -1,9 +1,6 @@
 package main.view;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -14,7 +11,6 @@ import javax.swing.text.PlainDocument;
 
 import main.controller.VehicleController;
 import main.model.Vehicle;
-import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
 public class panelMasuk extends javax.swing.JPanel {
