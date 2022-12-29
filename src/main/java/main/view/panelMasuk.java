@@ -110,6 +110,12 @@ public class panelMasuk extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
         jLabel2.setText("Kendaraan Masuk");
 
+        txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNopol1KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -218,6 +224,12 @@ public class panelMasuk extends javax.swing.JPanel {
         cbtipe.setSelectedIndex(0);
         txtWarna.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
+        if (txtNopol1.getText().length() > 1) {
+            txtNopol2.requestFocus();
+        }
+    }//GEN-LAST:event_txtNopol1KeyReleased
 
     private void updateTable() {
         try {

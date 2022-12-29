@@ -210,6 +210,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNopol1">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNopol1KeyReleased"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txtNopol1.setDocument(new UpperCaseDocument());"/>
       </AuxValues>
