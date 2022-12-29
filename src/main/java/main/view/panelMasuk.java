@@ -60,7 +60,7 @@ public class panelMasuk extends javax.swing.JPanel {
 
         labelWarna.setText("Warna");
 
-        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil" }));
+        cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil", "Jet", "Tank" }));
 
         btnSimpan.setText("Masuk");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
