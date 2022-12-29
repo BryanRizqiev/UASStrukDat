@@ -140,7 +140,7 @@ public class panelStack extends javax.swing.JPanel {
             VehicleController vController = new VehicleController(Integer.parseInt(stack));
 
             SQLCommand.getAll(vController);
-            vController.printArr();
+//            vController.printArr();
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
