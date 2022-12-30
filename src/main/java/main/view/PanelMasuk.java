@@ -15,6 +15,7 @@ import javax.swing.text.PlainDocument;
 import main.controller.VehicleController;
 import main.model.Vehicle;
 import main.utility.SQLCommand;
+import main.utility.Searching;
 import main.utility.Sorting;
 
 public class PanelMasuk extends javax.swing.JPanel {
@@ -120,11 +121,29 @@ public class PanelMasuk extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
         jLabel2.setText("Kendaraan Masuk");
 
+        txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNopol1KeyReleased(evt);
+            }
+        });
+
+        txtNopol2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNopol2KeyTyped(evt);
+            }
+        });
+
+        txtNopol3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNopol3KeyTyped(evt);
+            }
+        });
+
         labelNB.setText("Nama / Brand");
 
         labelNB1.setText("Sort by: ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plat", "Waktu masuk" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plat", "Waktu Masuk" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -138,7 +157,7 @@ public class PanelMasuk extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -149,27 +168,28 @@ public class PanelMasuk extends javax.swing.JPanel {
                                 .addComponent(labelNB1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(labelWarna)
-                                        .addComponent(labelTipe))
-                                    .addGap(83, 83, 83)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelWarna)
+                                    .addComponent(labelTipe))
+                                .addGap(83, 83, 83)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(labelNB)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelNopol)
                                 .addGap(69, 69, 69)
-                                .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 72, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 71, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -195,7 +215,7 @@ public class PanelMasuk extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelNB))
-                .addGap(73, 73, 73)
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
                     .addComponent(btnReset)
@@ -216,7 +236,7 @@ public class PanelMasuk extends javax.swing.JPanel {
                 warna = txtWarna.getText(),
                 nameOrBrand = txtNB.getText();
 
-        if (nopol.isEmpty() || warna.isEmpty()) {
+        if (txtNopol1.getText().isEmpty() || txtNopol2.getText().isEmpty() || txtNopol3.getText().isEmpty() || warna.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
             return;
         }
@@ -254,7 +274,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         String choise = (String) jComboBox1.getSelectedItem();
 
-        if (choise.equals("Plat")) {
+        if (choise.equals("Plat") || choise.equals("Tipe") || choise.equals("Warna")) {
             Sorting.sort(vController.getDatas());
             updateTable();
         } else {
@@ -262,6 +282,26 @@ public class PanelMasuk extends javax.swing.JPanel {
             updateTable();
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
+        if (txtNopol3.getText().length() >= 4) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNopol3KeyTyped
+
+    private void txtNopol2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol2KeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNopol2KeyTyped
+
+    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
+        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
+        if (txtNopol1.getText().length() == 2) {
+            txtNopol2.requestFocus();
+        }
+    }//GEN-LAST:event_txtNopol1KeyReleased
 
     private void updateTable() {
         try {
@@ -277,6 +317,7 @@ public class PanelMasuk extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 

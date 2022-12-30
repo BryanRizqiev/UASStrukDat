@@ -50,6 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GUI Parkir Kendaraan");
         setPreferredSize(new java.awt.Dimension(800, 800));
         getContentPane().add(src, java.awt.BorderLayout.CENTER);
 
