@@ -230,7 +230,7 @@ public class PanelMasuk extends javax.swing.JPanel {
         txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnInActionPerformed(java.awt.event.ActionEvent evt) {
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
                 warna = txtWarna.getText(),
@@ -284,7 +284,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
-        if (txtNopol3.getText().length() >= 4) {
+        if (txtNopol3.getText().length() > 2) {
             evt.consume();
         }
     }//GEN-LAST:event_txtNopol3KeyTyped
@@ -293,6 +293,9 @@ public class PanelMasuk extends javax.swing.JPanel {
         char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
             evt.consume();
+        }
+        if (txtNopol2.getText().length() == 3) {
+            txtNopol3.requestFocus();
         }
     }//GEN-LAST:event_txtNopol2KeyTyped
 
