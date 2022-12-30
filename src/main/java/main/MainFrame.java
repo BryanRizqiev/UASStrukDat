@@ -1,12 +1,14 @@
 package main;
 
 import main.controller.VehicleController;
+import main.model.Vehicle;
 import main.utility.SQLCommand;
 import main.view.PanelMasuk;
 import main.view.PanelKeluar;
 import main.view.PanelStack;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,11 +19,13 @@ public class MainFrame extends javax.swing.JFrame {
      */
     // Mencoba
     VehicleController vehicleController = new VehicleController(100);
+    ArrayList<Vehicle> vehiclesIsOut = new ArrayList<>();
 
     public MainFrame() {
         initComponents();
         try {
             SQLCommand.getAll(vehicleController);
+            SQLCommand.getAllIsOut(vehiclesIsOut);
             src.setViewportView(new PanelMasuk(vehicleController));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,7 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        src.setViewportView(new PanelKeluar(vehicleController));
+        src.setViewportView(new PanelKeluar(vehicleController, vehiclesIsOut));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed

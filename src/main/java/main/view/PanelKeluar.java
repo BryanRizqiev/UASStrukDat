@@ -3,6 +3,7 @@ package main.view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import main.controller.VehicleController;
+import main.model.Vehicle;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
@@ -21,8 +23,10 @@ public class PanelKeluar extends javax.swing.JPanel {
      * Creates new form panelCreate
      */
     VehicleController vController;
-    public PanelKeluar(VehicleController vController) {
+    ArrayList<Vehicle> listsIsOut;
+    public PanelKeluar(VehicleController vController, ArrayList<Vehicle> listsIsOut) {
         this.vController = vController;
+        this.listsIsOut = listsIsOut;
         initComponents();
         updateTable();
     }
@@ -43,6 +47,8 @@ public class PanelKeluar extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+
+        setPreferredSize(new java.awt.Dimension(500, 520));
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -88,11 +94,9 @@ public class PanelKeluar extends javax.swing.JPanel {
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
-        // need fixing
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
             jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
         }
 
@@ -106,18 +110,21 @@ public class PanelKeluar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelNopol)
-                            .addGap(68, 68, 68)
-                            .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(labelNopol)
+                                    .addGap(68, 68, 68)
+                                    .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 217, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,6 +164,7 @@ public class PanelKeluar extends javax.swing.JPanel {
         try {
             SQLCommand.updateIsOut(nopol, vController);
             JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
+            SQLCommand.getAllIsOut(listsIsOut);
             updateTable();
             txtNopol.setText("");
         } catch (Exception ex) {
@@ -174,22 +182,10 @@ public class PanelKeluar extends javax.swing.JPanel {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
-            Connection conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM vehicles WHERE is_out = 1 ORDER BY out_time ASC";
-            PreparedStatement st = conn.prepareStatement(sql);
-            ResultSet res = st.executeQuery();
 
-            while (res.next()) {
-                String nopol = res.getString("nopol").replace("_", " "),
-                        tipe = res.getString("type"),
-                        color = res.getString("color"),
-                        bayar = "Rp." + res.getString("pay"),
-                        outTime = res.getString("out_time");
-
-                dataModel.addRow(new Object[]{nopol, tipe, color, bayar, outTime});
+            for (Vehicle data: listsIsOut) {
+                dataModel.addRow(data.getDataVehicleOut());
             }
-
-            conn.close(); st.close(); res.close();
 
         } catch (Exception e) {
             e.printStackTrace();
