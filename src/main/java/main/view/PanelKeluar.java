@@ -24,6 +24,7 @@ public class PanelKeluar extends javax.swing.JPanel {
      */
     VehicleController vController;
     ArrayList<Vehicle> listsIsOut;
+
     public PanelKeluar(VehicleController vController, ArrayList<Vehicle> listsIsOut) {
         this.vController = vController;
         this.listsIsOut = listsIsOut;
@@ -40,15 +41,37 @@ public class PanelKeluar extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnReset = new javax.swing.JButton();
         labelNopol = new javax.swing.JLabel();
-        txtNopol = new javax.swing.JTextField();
-        btnSimpan = new javax.swing.JButton();
+        txtNopol1 = new javax.swing.JTextField();
+        txtNopol2 = new javax.swing.JTextField();
+        txtNopol3 = new javax.swing.JTextField();
+        btnReset = new javax.swing.JButton();
+        btnOut = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(500, 520));
+
+        labelNopol.setText("No Polisi *");
+
+        txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNopol1KeyReleased(evt);
+            }
+        });
+
+        txtNopol2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNopol2KeyTyped(evt);
+            }
+        });
+
+        txtNopol3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNopol3KeyTyped(evt);
+            }
+        });
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -57,12 +80,10 @@ public class PanelKeluar extends javax.swing.JPanel {
             }
         });
 
-        labelNopol.setText("No Polisi");
-
-        btnSimpan.setText("Keluar");
-        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+        btnOut.setText("Keluar");
+        btnOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSimpanActionPerformed(evt);
+                btnOutActionPerformed(evt);
             }
         });
 
@@ -110,20 +131,25 @@ public class PanelKeluar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(labelNopol)
-                                    .addGap(68, 68, 68)
-                                    .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 217, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelNopol)
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -132,29 +158,31 @@ public class PanelKeluar extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNopol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelNopol))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelNopol)
+                    .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSimpan)
+                    .addComponent(btnOut)
                     .addComponent(btnReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        txtNopol.setDocument(new UpperCaseDocument());
+        txtNopol1.setDocument(new UpperCaseDocument());
+        txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+    private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
 
-        if (txtNopol.getText().isEmpty()) {
+        if (txtNopol1.getText().isEmpty() || txtNopol2.getText().isEmpty() || txtNopol3.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
             return;
         }
-
-        String nopol = txtNopol.getText().replace(" ", "_");
+        String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
 
         if (!vController.isExist(nopol)) {
             JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
@@ -166,16 +194,39 @@ public class PanelKeluar extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
             SQLCommand.getAllIsOut(listsIsOut);
             updateTable();
-            txtNopol.setText("");
+            txtNopol1.setText("");
+            txtNopol2.setText("");
+            txtNopol3.setText("");
         } catch (Exception ex) {
             Logger.getLogger(PanelKeluar.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnSimpanActionPerformed
+    }//GEN-LAST:event_btnOutActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        txtNopol.setText("");
+        txtNopol1.setText("");
+        txtNopol2.setText("");
+        txtNopol3.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
+    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
+        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
+        if (txtNopol1.getText().length() == 2) {
+            txtNopol2.requestFocus();
+        }
+    }//GEN-LAST:event_txtNopol1KeyReleased
+
+    private void txtNopol2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol2KeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNopol2KeyTyped
+
+    private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
+        if (txtNopol3.getText().length() >= 4) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNopol3KeyTyped
 
     // Lemot karena query
     private void updateTable() {
@@ -183,7 +234,7 @@ public class PanelKeluar extends javax.swing.JPanel {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
 
-            for (Vehicle data: listsIsOut) {
+            for (Vehicle data : listsIsOut) {
                 dataModel.addRow(data.getDataVehicleOut());
             }
 
@@ -205,12 +256,14 @@ public class PanelKeluar extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOut;
     private javax.swing.JButton btnReset;
-    private javax.swing.JButton btnSimpan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelNopol;
-    private javax.swing.JTextField txtNopol;
+    private javax.swing.JTextField txtNopol1;
+    private javax.swing.JTextField txtNopol2;
+    private javax.swing.JTextField txtNopol3;
     // End of variables declaration//GEN-END:variables
 }

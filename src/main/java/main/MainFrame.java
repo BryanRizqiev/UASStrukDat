@@ -5,7 +5,6 @@ import main.model.Vehicle;
 import main.utility.SQLCommand;
 import main.view.PanelMasuk;
 import main.view.PanelKeluar;
-import main.view.PanelStack;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GUI Parkir Kendaraan");
         setPreferredSize(new java.awt.Dimension(800, 800));
         getContentPane().add(src, java.awt.BorderLayout.CENTER);
 
@@ -80,11 +80,6 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setText("Stack");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
         jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
@@ -105,10 +100,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         src.setViewportView(new PanelKeluar(vehicleController, vehiclesIsOut));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        src.setViewportView(new PanelStack());
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments

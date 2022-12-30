@@ -66,9 +66,13 @@ public class SQLCommand {
             stmnt.setString(1, nopol);
             ResultSet res = stmnt.executeQuery();
 
-            res.close(); stmnt.close(); conn.close();
+            boolean isExist = res.next() && res.getInt(1) > 0;
 
-            return res.next() && res.getInt(1) > 0;
+            res.close();
+            stmnt.close();
+            conn.close();
+
+            return isExist;
 
         } catch (SQLException e) {
             Logger.getLogger(SQLCommand.class.getName()).log(Level.SEVERE, null, e);
