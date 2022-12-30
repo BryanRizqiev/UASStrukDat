@@ -32,12 +32,12 @@
                           <Group type="102" attributes="0">
                               <Component id="jLabel1" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="usernameTextField1" min="-2" pref="140" max="-2" attributes="0"/>
+                              <Component id="usernameTextField" min="-2" pref="140" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" pref="80" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="usernameTextField" min="-2" pref="140" max="-2" attributes="0"/>
+                              <Component id="passwordTextField" min="-2" pref="140" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -56,12 +56,12 @@
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="usernameTextField1" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="usernameTextField" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="usernameTextField" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="passwordTextField" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
               <Component id="logginButton" min="-2" pref="35" max="-2" attributes="0"/>
@@ -81,9 +81,9 @@
         <Property name="text" type="java.lang.String" value="Password"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="usernameTextField">
+    <Component class="javax.swing.JTextField" name="passwordTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="usernameTextField1">
+    <Component class="javax.swing.JTextField" name="usernameTextField">
     </Component>
     <Component class="javax.swing.JButton" name="logginButton">
       <Properties>
