@@ -46,7 +46,7 @@ public class PanelKeluar extends javax.swing.JPanel {
         txtNopol2 = new javax.swing.JTextField();
         txtNopol3 = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
-        btnSimpan = new javax.swing.JButton();
+        btnOut = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -80,10 +80,10 @@ public class PanelKeluar extends javax.swing.JPanel {
             }
         });
 
-        btnSimpan.setText("Keluar");
-        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+        btnOut.setText("Keluar");
+        btnOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSimpanActionPerformed(evt);
+                btnOutActionPerformed(evt);
             }
         });
 
@@ -135,7 +135,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -165,7 +165,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                     .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSimpan)
+                    .addComponent(btnOut)
                     .addComponent(btnReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
@@ -176,7 +176,7 @@ public class PanelKeluar extends javax.swing.JPanel {
         txtNopol3.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+    private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
 
         if (txtNopol1.getText().isEmpty() || txtNopol2.getText().isEmpty() || txtNopol3.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
@@ -200,7 +200,7 @@ public class PanelKeluar extends javax.swing.JPanel {
         } catch (Exception ex) {
             Logger.getLogger(PanelKeluar.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnSimpanActionPerformed
+    }//GEN-LAST:event_btnOutActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         txtNopol1.setText("");
@@ -256,8 +256,8 @@ public class PanelKeluar extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOut;
     private javax.swing.JButton btnReset;
-    private javax.swing.JButton btnSimpan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

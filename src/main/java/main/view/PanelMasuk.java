@@ -46,7 +46,7 @@ public class PanelMasuk extends javax.swing.JPanel {
         txtWarna = new javax.swing.JTextField();
         labelWarna = new javax.swing.JLabel();
         cbtipe = new javax.swing.JComboBox<>();
-        btnSimpan = new javax.swing.JButton();
+        btnIn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -73,10 +73,10 @@ public class PanelMasuk extends javax.swing.JPanel {
 
         cbtipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Motor", "Mobil" }));
 
-        btnSimpan.setText("Masuk");
-        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+        btnIn.setText("Masuk");
+        btnIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSimpanActionPerformed(evt);
+                btnInActionPerformed(evt);
             }
         });
 
@@ -161,7 +161,7 @@ public class PanelMasuk extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -217,7 +217,7 @@ public class PanelMasuk extends javax.swing.JPanel {
                     .addComponent(labelNB))
                 .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSimpan)
+                    .addComponent(btnIn)
                     .addComponent(btnReset)
                     .addComponent(labelNB1)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -334,8 +334,8 @@ public class PanelMasuk extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIn;
     private javax.swing.JButton btnReset;
-    private javax.swing.JButton btnSimpan;
     private javax.swing.JComboBox<String> cbtipe;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
