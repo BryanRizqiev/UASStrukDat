@@ -241,7 +241,7 @@ public class PanelMasuk extends javax.swing.JPanel {
             return;
         }
 
-        if (SQLCommand.isExist(nopol)) {
+        if (vController.isExist(nopol)) {
             JOptionPane.showMessageDialog(this, "Kendaraan sudah berada di parkiran");
             return;
         }
@@ -250,8 +250,6 @@ public class PanelMasuk extends javax.swing.JPanel {
             Vehicle vehicle = SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), vController);
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
-
-            System.out.println(vehicle.getNopol());
 
             txtNopol1.setText("");
             txtNopol2.setText("");
