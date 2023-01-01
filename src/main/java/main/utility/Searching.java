@@ -17,8 +17,7 @@ public class Searching {
             // penentu asc sort or desc sort
             if (result > 0) {
                 first = mid + 1;
-            }
-            else {
+            } else {
                 last = mid - 1;
             }
         }

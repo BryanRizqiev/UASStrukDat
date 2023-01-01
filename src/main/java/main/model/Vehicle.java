@@ -100,15 +100,13 @@ public class Vehicle {
         this.outTime = outTime;
     }
 
-    public Vector<Object> getDataVehicleIn() {
+    public Vector<Object> getDataVehicleOut() {
         Vector<Object> data = new Vector<>();
-        data.add(id);
         data.add(nopol);
         data.add(type);
         data.add(color);
-        data.add(nameOrBrand);
         data.add(pay);
-        data.add(inTime);
+        data.add((outTime == null) ? "" : outTime);
         return data;
     }
 

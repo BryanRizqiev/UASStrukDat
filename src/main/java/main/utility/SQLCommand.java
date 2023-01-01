@@ -5,6 +5,7 @@ import main.model.Vehicle;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,31 +15,14 @@ public class SQLCommand {
     private static Connection conn;
     private static final String CREATE = "INSERT INTO vehicles (nopol, type, color, name_or_brand) VALUES (?, ?, ?, ?);";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM vehicles WHERE is_out = 0 ORDER BY in_time ASC;";
+    private static final String SELECT_ALL_QUERY_IS_OUT = "SELECT * FROM vehicles WHERE is_out = 1 ORDER BY in_time ASC;";
     private static final String SELECT_ONE_QUERY_BY_NOPOL = "SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1;";
     private static final String SELECT_ONE_QUERY_BY_ID = "SELECT * FROM vehicles WHERE id = ? AND is_out = 0 LIMIT 1;";
     private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
-    private static final String UPDATE_OUT_BY_NOPOL_OUTTIME = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
     private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1 WHERE is_out = 0 AND id = ?;";
-    private static final String INSERT_SQL = "INSERT INTO vehicles (nopol, type, color) VALUES (?, ?, ?);";
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static Timestamp ts = new Timestamp(System.currentTimeMillis());
-
-    public static void create(String nopol, String type, String color) throws Exception {
-
-        try {
-            conn = JDBCUtil.getConnection();
-            PreparedStatement stmnt = conn.prepareStatement(INSERT_SQL);
-            stmnt.setString(1, nopol);
-            stmnt.setString(2, type);
-            stmnt.setString(3, color);
-            stmnt.executeUpdate();
-            System.out.println("Plat " + nopol.replace("_", " ") + " masuk ke parkiran");
-
-        } catch (SQLException exception) {
-            throw new Exception(exception);
-        }
-    }
 
     public static Vehicle create(String nopol, String type, String color, String name_or_brand, VehicleController vController) throws Exception {
         if (vController.isFull()) {
@@ -81,7 +65,14 @@ public class SQLCommand {
             PreparedStatement stmnt = conn.prepareStatement(SELECT_ONE_QUERY_BY_NOPOL);
             stmnt.setString(1, nopol);
             ResultSet res = stmnt.executeQuery();
-            return res.next() && res.getInt(1) > 0;
+
+            boolean isExist = res.next() && res.getInt(1) > 0;
+
+            res.close();
+            stmnt.close();
+            conn.close();
+
+            return isExist;
 
         } catch (SQLException e) {
             Logger.getLogger(SQLCommand.class.getName()).log(Level.SEVERE, null, e);
@@ -89,30 +80,11 @@ public class SQLCommand {
         }
     }
 
-    public static void getAll() {
-        try {
-            conn = JDBCUtil.getConnection();
-            PreparedStatement stmnt = conn.prepareStatement(SELECT_ALL_QUERY);
-            ResultSet rs = stmnt.executeQuery();
-
-            if (!rs.next()) {
-                throw new Exception("Data tidak ada");
-            }
-
-            while (rs.next()) {
-
-            }
-        } catch (Exception e) {
-        }
-
-    }
-
     // rs.close() jangan lupa
     public static void getAll(VehicleController vController) throws Exception {
         try {
             vController.clear();
-            int totalRows = countData();
-            if (totalRows > vController.size()) {
+            if (countData() > vController.size()) {
                 throw new Exception("Kapasitas tempat parkir (stack) tidak mencukupi");
             }
             conn = JDBCUtil.getConnection();
@@ -122,8 +94,6 @@ public class SQLCommand {
             if (!rs.next()) {
                 throw new Exception("Data tidak ada");
             }
-
-            vController.clear();
 
             while (rs.next()) {
                 if (vController.isFull()) {
@@ -144,7 +114,45 @@ public class SQLCommand {
             stmnt.close();
             conn.close();
 
-//            System.out.println("Success");
+            System.out.println("Success get all datas");
+        } catch (SQLException exception) {
+            throw new Exception(exception.getMessage());
+        }
+    }
+
+    public static void getAllIsOut(ArrayList<Vehicle> lists) throws Exception {
+        try {
+            lists.clear();
+
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement(SELECT_ALL_QUERY_IS_OUT);
+            ResultSet rs = stmnt.executeQuery();
+
+            if (!rs.next()) {
+                throw new Exception("Data tidak ada");
+            }
+
+            while (rs.next()) {
+                int kode = rs.getInt("id");
+                String nopol = rs.getString("nopol");
+                String type = rs.getString("type");
+                String color = rs.getString("color");
+                String nameOrBrand = (rs.getString("name_or_brand") == null ? "" : rs.getString("name_or_brand"));
+                int pay = rs.getInt("pay");
+                boolean isOut = rs.getBoolean("is_out");
+                Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
+                String outTimeStr = rs.getString("out_time");
+                Timestamp outTime = (outTimeStr == null) ? null : Timestamp.valueOf(outTimeStr);
+                Vehicle vehicle = new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime);
+                vehicle.setOutTime(outTime);
+                lists.add(vehicle);
+            }
+
+            rs.close();
+            stmnt.close();
+            conn.close();
+
+            System.out.println("Success get all datas is out");
         } catch (SQLException exception) {
             throw new Exception(exception.getMessage());
         }
@@ -215,22 +223,6 @@ public class SQLCommand {
     }
 
     public static void update() {
-
-    }
-
-    public static void updateIsOut(String nopol) throws Exception {
-        try {
-
-            conn = JDBCUtil.getConnection();
-            PreparedStatement stmnt = conn.prepareStatement(UPDATE_OUT_BY_NOPOL_OUTTIME);
-            stmnt.setString(1, sdf.format(ts));
-            stmnt.setString(2, nopol);
-            stmnt.executeUpdate();
-            System.out.println("Plat " + nopol.replace("_", " ") + " keluar dari parkiran");
-
-        } catch (SQLException exception) {
-            throw new Exception(exception);
-        }
 
     }
 
