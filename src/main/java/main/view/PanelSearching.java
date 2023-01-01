@@ -3,6 +3,7 @@ package main.view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,8 +55,8 @@ public class PanelSearching extends javax.swing.JPanel {
         labelNopol.setText("No Polisi *");
 
         txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNopol1KeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNopol1KeyTyped(evt);
             }
         });
 
@@ -90,6 +91,9 @@ public class PanelSearching extends javax.swing.JPanel {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
@@ -115,7 +119,9 @@ public class PanelSearching extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(70);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(150);
         }
 
         jLabel1.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
@@ -167,8 +173,8 @@ public class PanelSearching extends javax.swing.JPanel {
                     .addComponent(btnSearch)
                     .addComponent(btnReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         txtNopol1.setDocument(new UpperCaseDocument());
@@ -201,22 +207,34 @@ public class PanelSearching extends javax.swing.JPanel {
         txtNopol3.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
-        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
+    private void txtNopol1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            evt.consume();
+        }
         if (txtNopol1.getText().length() > 1) {
+            evt.consume();
             txtNopol2.requestFocus();
         }
-    }//GEN-LAST:event_txtNopol1KeyReleased
+    }//GEN-LAST:event_txtNopol1KeyTyped
 
     private void txtNopol2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol2KeyTyped
         char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
             evt.consume();
         }
+        if (txtNopol2.getText().length() == 4) {
+            evt.consume();
+            txtNopol3.requestFocus();
+        }
     }//GEN-LAST:event_txtNopol2KeyTyped
 
     private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
-        if (txtNopol3.getText().length() >= 4) {
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            evt.consume();
+        }
+        if (txtNopol3.getText().length() > 2) {
             evt.consume();
         }
     }//GEN-LAST:event_txtNopol3KeyTyped
@@ -226,7 +244,8 @@ public class PanelSearching extends javax.swing.JPanel {
         DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
         dataModel.setRowCount(0);
 
-        dataModel.addRow(new Object[] {vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), vehicle.getInTime()});
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime());
+        dataModel.addRow(new Object[] {vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp});
     }
 
     // Membuat kelas yang meng-override kelas AbstractDocument

@@ -122,8 +122,8 @@ public class PanelMasuk extends javax.swing.JPanel {
         jLabel2.setText("Kendaraan Masuk");
 
         txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNopol1KeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNopol1KeyTyped(evt);
             }
         });
 
@@ -282,6 +282,10 @@ public class PanelMasuk extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            evt.consume();
+        }
         if (txtNopol3.getText().length() > 2) {
             evt.consume();
         }
@@ -292,17 +296,22 @@ public class PanelMasuk extends javax.swing.JPanel {
         if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
             evt.consume();
         }
-        if (txtNopol2.getText().length() == 3) {
+        if (txtNopol2.getText().length() == 4) {
+            evt.consume();
             txtNopol3.requestFocus();
         }
     }//GEN-LAST:event_txtNopol2KeyTyped
 
-    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
-        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
-        if (txtNopol1.getText().length() == 2) {
+    private void txtNopol1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            evt.consume();
+        }
+        if (txtNopol1.getText().length() > 1) {
+            evt.consume();
             txtNopol2.requestFocus();
         }
-    }//GEN-LAST:event_txtNopol1KeyReleased
+    }//GEN-LAST:event_txtNopol1KeyTyped
 
     private void updateTable() {
         try {
@@ -312,8 +321,8 @@ public class PanelMasuk extends javax.swing.JPanel {
             Vehicle[] vehicles = vController.fetchDatas();
 
             for (Vehicle data : vehicles) {
-                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(data.getInTime());
-                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timeStamp});
+                String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(data.getInTime());
+                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timestamp});
             }
 
         } catch (Exception e) {

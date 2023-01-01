@@ -1,6 +1,7 @@
 package main.model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 // methodnya kurang
@@ -106,7 +107,7 @@ public class Vehicle {
         data.add(type);
         data.add(color);
         data.add(pay);
-        data.add((outTime == null) ? "" : outTime);
+        data.add((outTime == null) ? "" : new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(outTime));
         return data;
     }
 

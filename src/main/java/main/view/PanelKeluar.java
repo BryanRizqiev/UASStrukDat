@@ -61,9 +61,6 @@ public class PanelKeluar extends javax.swing.JPanel {
         labelNopol.setText("No Polisi ");
 
         txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNopol1KeyReleased(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNopol1KeyTyped(evt);
             }
@@ -157,13 +154,14 @@ public class PanelKeluar extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(136, 136, 136)
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(136, 136, 136)
+                                        .addComponent(jLabel1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -250,20 +248,22 @@ public class PanelKeluar extends javax.swing.JPanel {
         txtNopol3.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
-    }//GEN-LAST:event_txtNopol1KeyReleased
-
     private void txtNopol2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol2KeyTyped
         char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
             evt.consume();
         }
-        if (txtNopol2.getText().length() == 3) {
+        if (txtNopol2.getText().length() == 4) {
+            evt.consume();
             txtNopol3.requestFocus();
         }
     }//GEN-LAST:event_txtNopol2KeyTyped
 
     private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            evt.consume();
+        }
         if (txtNopol3.getText().length() > 2) {
             evt.consume();
         }
@@ -281,12 +281,12 @@ public class PanelKeluar extends javax.swing.JPanel {
         txtNoKarcis.setText("");
         jRadioButton2.setSelected(true);
 
-        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
         char c = evt.getKeyChar();
         if (Character.isDigit(c)) {
             evt.consume();
         }
-        if (txtNopol1.getText().length() > 0) {
+        if (txtNopol1.getText().length() > 1) {
+            evt.consume();
             txtNopol2.requestFocus();
         }
     }//GEN-LAST:event_txtNopol1KeyTyped
