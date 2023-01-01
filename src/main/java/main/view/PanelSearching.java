@@ -23,15 +23,11 @@ public class PanelSearching extends javax.swing.JPanel {
     /**
      * Creates new form panelCreate
      */
-    static String nopol = "";
     VehicleController vController;
-    ArrayList<Vehicle> listsIsOut;
 
-    public PanelSearching(VehicleController vController, ArrayList<Vehicle> listsIsOut) {
+    public PanelSearching(VehicleController vController) {
         this.vController = vController;
-        this.listsIsOut = listsIsOut;
         initComponents();
-        updateTable(nopol);
     }
 
     /**
@@ -185,16 +181,16 @@ public class PanelSearching extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Isi semua form");
             return;
         }
-        nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
+        String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
 
-        Vehicle cariData = Searching.search(vController.getDatas(), nopol, false);
-        if (cariData == null) {
+        Vehicle data = Searching.search(vController.getDatas(), nopol, false);
+        if (data == null) {
             JOptionPane.showMessageDialog(this, "Data tidak ada");
         } else {
             txtNopol1.setText("");
             txtNopol2.setText("");
             txtNopol3.setText("");
-            updateTable(nopol);
+            updateTable(data);
         }
 
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -207,7 +203,7 @@ public class PanelSearching extends javax.swing.JPanel {
 
     private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
         // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
-        if (txtNopol1.getText().length() == 2) {
+        if (txtNopol1.getText().length() > 1) {
             txtNopol2.requestFocus();
         }
     }//GEN-LAST:event_txtNopol1KeyReleased
@@ -226,27 +222,11 @@ public class PanelSearching extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNopol3KeyTyped
 
     // Lemot karena query
-    private void updateTable(String nopol) {
-        try {
-            DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
-            dataModel.setRowCount(0);
+    private void updateTable(Vehicle vehicle) {
+        DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
+        dataModel.setRowCount(0);
 
-            Connection conn = JDBCUtil.getConnection();
-            PreparedStatement stmnt = conn.prepareStatement("SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1");
-            stmnt.setString(1, nopol);
-            ResultSet res = stmnt.executeQuery();
-
-            if (res.next()) {
-                dataModel.addRow(new Object[]{res.getString("nopol"), res.getString("type"), res.getString("color"), res.getString("pay"), res.getString("in_time")});
-            }
-
-            conn.close();
-            stmnt.close();
-            res.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        dataModel.addRow(new Object[] {vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), vehicle.getInTime()});
     }
 
     // Membuat kelas yang meng-override kelas AbstractDocument
