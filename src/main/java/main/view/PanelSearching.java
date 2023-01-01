@@ -244,11 +244,10 @@ public class PanelSearching extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtNopol3KeyTyped
 
-    // Lemot karena query
     private void updateTable(Vehicle vehicle) {
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime());
-        dataModel.addRow(new Object[]{vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp});
+        dataModel.addRow(new Object[] {vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp});
     }
 
     // Membuat kelas yang meng-override kelas AbstractDocument
