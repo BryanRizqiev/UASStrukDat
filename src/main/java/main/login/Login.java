@@ -4,15 +4,12 @@
  */
 package main.login;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.MainFrame;
-import main.utility.APOD;
-import main.utility.JsonBodyHandler;
+import okhttp3.*;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 
 /**
  *
@@ -38,8 +35,8 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        passwordTextField = new javax.swing.JTextField();
         usernameTextField = new javax.swing.JTextField();
-        usernameTextField1 = new javax.swing.JTextField();
         logginButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -52,11 +49,7 @@ public class Login extends javax.swing.JFrame {
         logginButton.setText("Login");
         logginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    logginButtonActionPerformed(evt);
-                } catch (IOException | InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                logginButtonActionPerformed(evt);
             }
         });
 
@@ -72,11 +65,11 @@ public class Login extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(usernameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(141, 141, 141)
                         .addComponent(logginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -88,11 +81,11 @@ public class Login extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(usernameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(logginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(57, Short.MAX_VALUE))
@@ -101,29 +94,46 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logginButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException, InterruptedException {//GEN-FIRST:event_logginButtonActionPerformed
-        var client = HttpClient.newHttpClient();
+    private void logginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logginButtonActionPerformed
+        // kurang pakai yang async
+        OkHttpClient client = new OkHttpClient();
 
-        var request = HttpRequest.newBuilder(URI.create("https://ourdomain.my.id/"))
-//                .POST(HttpRequest.BodyPublishers.noBody())
-                .GET()
-                .header("accept", "application/json")
+        RequestBody formBody = new FormBody.Builder()
+                .add("username", usernameTextField.getText())
+                .add("password", passwordTextField.getText())
                 .build();
 
-        // use the client to send the request
-        var response = client.send(request, new JsonBodyHandler<>(APOD.class));
-        // the response:
-        System.out.println(response.body().get().message);
-        System.out.println(response.statusCode());
+        Request request = new Request.Builder()
+                .url("http://103.171.85.233:3007/login")
+                .post(formBody)
+                .build();
 
-        this.setVisible(false);
+        try {
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code: " + response.body().string());
+            String responseJson = response.body().string();
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainFrame().setVisible(true);
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            ResponseLogin responseLogin = objectMapper.readValue(responseJson, ResponseLogin.class);
+
+            response.close();
+
+            if (responseLogin.auth) {
+                this.setVisible(false);
+                EventQueue.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new MainFrame().setVisible(true);
+                    }
+                });
+            } else {
+                throw new Exception("Tidak ter-autentikasi");
             }
-        });
+
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+        }
     }//GEN-LAST:event_logginButtonActionPerformed
 
     /**
@@ -166,7 +176,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton logginButton;
+    private javax.swing.JTextField passwordTextField;
     private javax.swing.JTextField usernameTextField;
-    private javax.swing.JTextField usernameTextField1;
     // End of variables declaration//GEN-END:variables
 }

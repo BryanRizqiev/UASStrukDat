@@ -16,20 +16,22 @@ import main.controller.VehicleController;
 import main.model.Vehicle;
 import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
+import main.utility.Searching;
 
-public class PanelKeluar extends javax.swing.JPanel {
+public class PanelSearching extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
+    static String nopol = "";
     VehicleController vController;
     ArrayList<Vehicle> listsIsOut;
 
-    public PanelKeluar(VehicleController vController, ArrayList<Vehicle> listsIsOut) {
+    public PanelSearching(VehicleController vController, ArrayList<Vehicle> listsIsOut) {
         this.vController = vController;
         this.listsIsOut = listsIsOut;
         initComponents();
-        updateTable();
+        updateTable(nopol);
     }
 
     /**
@@ -41,31 +43,23 @@ public class PanelKeluar extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         labelNopol = new javax.swing.JLabel();
         txtNopol1 = new javax.swing.JTextField();
         txtNopol2 = new javax.swing.JTextField();
         txtNopol3 = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
-        btnOut = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        labelNoKarcis = new javax.swing.JLabel();
-        txtNoKarcis = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
 
         setPreferredSize(new java.awt.Dimension(500, 520));
 
-        labelNopol.setText("No Polisi ");
+        labelNopol.setText("No Polisi *");
 
         txtNopol1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtNopol1KeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNopol1KeyTyped(evt);
             }
         });
 
@@ -88,10 +82,10 @@ public class PanelKeluar extends javax.swing.JPanel {
             }
         });
 
-        btnOut.setText("Keluar");
-        btnOut.addActionListener(new java.awt.event.ActionListener() {
+        btnSearch.setText("Cari");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOutActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
 
@@ -103,7 +97,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Bayar", "Waktu Keluar"
+                "Plat", "Tipe", "Warna", "Bayar", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {
@@ -126,25 +120,10 @@ public class PanelKeluar extends javax.swing.JPanel {
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
         }
 
         jLabel1.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
-        jLabel1.setText("Kendaraan Keluar");
-
-        labelNoKarcis.setText("No Karcis ");
-
-        txtNoKarcis.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNoKarcisKeyTyped(evt);
-            }
-        });
-
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("✓");
-
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("✓");
+        jLabel1.setText("Cari Kendaraan");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -153,39 +132,28 @@ public class PanelKeluar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(136, 136, 136)
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelNopol)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(labelNoKarcis)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNoKarcis, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(36, 36, 36)
+                                        .addComponent(jLabel1)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,55 +162,42 @@ public class PanelKeluar extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelNoKarcis)
-                    .addComponent(txtNoKarcis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelNopol)
                     .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton2))
-                .addGap(25, 25, 25)
+                    .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnReset)
-                    .addComponent(btnOut))
+                    .addComponent(btnSearch)
+                    .addComponent(btnReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(201, Short.MAX_VALUE))
         );
 
         txtNopol1.setDocument(new UpperCaseDocument());
         txtNopol3.setDocument(new UpperCaseDocument());
-        txtNopol1.setDocument(new UpperCaseDocument());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
 
         if (txtNopol1.getText().isEmpty() || txtNopol2.getText().isEmpty() || txtNopol3.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Isi semua form");
             return;
         }
-        String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
+        nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
 
-        if (!vController.isExist(nopol)) {
-            JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
-            return;
-        }
-
-        try {
-            SQLCommand.updateIsOut(nopol, vController);
-            JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
-            SQLCommand.getAllIsOut(listsIsOut);
-            updateTable();
+        Vehicle cariData = Searching.search(vController.getDatas(), nopol, false);
+        if (cariData == null) {
+            JOptionPane.showMessageDialog(this, "Data tidak ada");
+        } else {
             txtNopol1.setText("");
             txtNopol2.setText("");
             txtNopol3.setText("");
-        } catch (Exception ex) {
-            Logger.getLogger(PanelKeluar.class.getName()).log(Level.SEVERE, null, ex);
+            updateTable(nopol);
         }
-    }//GEN-LAST:event_btnOutActionPerformed
+
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         txtNopol1.setText("");
@@ -251,6 +206,10 @@ public class PanelKeluar extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void txtNopol1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyReleased
+        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
+        if (txtNopol1.getText().length() == 2) {
+            txtNopol2.requestFocus();
+        }
     }//GEN-LAST:event_txtNopol1KeyReleased
 
     private void txtNopol2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol2KeyTyped
@@ -258,48 +217,32 @@ public class PanelKeluar extends javax.swing.JPanel {
         if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
             evt.consume();
         }
-        if (txtNopol2.getText().length() == 3) {
-            txtNopol3.requestFocus();
-        }
     }//GEN-LAST:event_txtNopol2KeyTyped
 
     private void txtNopol3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol3KeyTyped
-        if (txtNopol3.getText().length() > 2) {
+        if (txtNopol3.getText().length() >= 4) {
             evt.consume();
         }
     }//GEN-LAST:event_txtNopol3KeyTyped
 
-    private void txtNoKarcisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoKarcisKeyTyped
-        txtNopol1.setText(""); txtNopol2.setText(""); txtNopol3.setText("");
-        jRadioButton1.setSelected(true);
-        if (txtNoKarcis.getText().length() > 2) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtNoKarcisKeyTyped
-
-    private void txtNopol1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyTyped
-        txtNoKarcis.setText("");
-        jRadioButton2.setSelected(true);
-
-        // Pindah form jika panjang teks di dalam textfield sudah mencapai 2 karakter
-        char c = evt.getKeyChar();
-        if (Character.isDigit(c)) {
-            evt.consume();
-        }
-        if (txtNopol1.getText().length() > 0) {
-            txtNopol2.requestFocus();
-        }
-    }//GEN-LAST:event_txtNopol1KeyTyped
-
     // Lemot karena query
-    private void updateTable() {
+    private void updateTable(String nopol) {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
 
-            for (Vehicle data : listsIsOut) {
-                dataModel.addRow(data.getDataVehicleOut());
+            Connection conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement("SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1");
+            stmnt.setString(1, nopol);
+            ResultSet res = stmnt.executeQuery();
+
+            if (res.next()) {
+                dataModel.addRow(new Object[]{res.getString("nopol"), res.getString("type"), res.getString("color"), res.getString("pay"), res.getString("in_time")});
             }
+
+            conn.close();
+            stmnt.close();
+            res.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -319,17 +262,12 @@ public class PanelKeluar extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnOut;
     private javax.swing.JButton btnReset;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel labelNoKarcis;
     private javax.swing.JLabel labelNopol;
-    private javax.swing.JTextField txtNoKarcis;
     private javax.swing.JTextField txtNopol1;
     private javax.swing.JTextField txtNopol2;
     private javax.swing.JTextField txtNopol3;

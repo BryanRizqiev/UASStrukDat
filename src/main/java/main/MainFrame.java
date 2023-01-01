@@ -1,14 +1,16 @@
 package main;
 
 import main.controller.VehicleController;
+import main.model.Vehicle;
 import main.utility.SQLCommand;
 import main.view.PanelMasuk;
 import main.view.PanelKeluar;
-import main.view.PanelStack;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.view.PanelSearching;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -17,11 +19,13 @@ public class MainFrame extends javax.swing.JFrame {
      */
     // Mencoba
     VehicleController vehicleController = new VehicleController(100);
-
+    ArrayList<Vehicle> vehiclesIsOut = new ArrayList<>();
+    
     public MainFrame() {
         initComponents();
         try {
             SQLCommand.getAll(vehicleController);
+            SQLCommand.getAllIsOut(vehiclesIsOut);
             src.setViewportView(new PanelMasuk(vehicleController));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GUI Parkir Kendaraan");
         setPreferredSize(new java.awt.Dimension(800, 800));
         getContentPane().add(src, java.awt.BorderLayout.CENTER);
 
@@ -75,7 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem3.setText("Sorting");
         jMenu2.add(jMenuItem3);
 
-        jMenuItem4.setText("Stack");
+        jMenuItem4.setText("Searching");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -97,13 +102,13 @@ public class MainFrame extends javax.swing.JFrame {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        src.setViewportView(new PanelKeluar(vehicleController));
+        src.setViewportView(new PanelKeluar(vehicleController, vehiclesIsOut));
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
+    
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        src.setViewportView(new PanelStack());
+        src.setViewportView(new PanelSearching(vehicleController, vehiclesIsOut));
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
@@ -120,21 +125,21 @@ public class MainFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
+                    
                 }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
+            
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
