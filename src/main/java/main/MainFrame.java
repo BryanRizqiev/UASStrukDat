@@ -108,7 +108,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
     
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        src.setViewportView(new PanelSearching(vehicleController, vehiclesIsOut));
+        src.setViewportView(new PanelSearching(vehicleController));
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
