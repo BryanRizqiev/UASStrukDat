@@ -237,7 +237,7 @@ public class PanelSearching extends javax.swing.JPanel {
             ResultSet res = stmnt.executeQuery();
 
             if (res.next()) {
-                dataModel.addRow(new Object[]{res.getString("nopol"), res.getString("type"), res.getString("color"), res.getString("pay"), res.getString("inTime")});
+                dataModel.addRow(new Object[]{res.getString("nopol"), res.getString("type"), res.getString("color"), res.getString("pay"), res.getString("in_time")});
             }
 
             conn.close();
