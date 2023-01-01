@@ -26,9 +26,13 @@ public class PanelSearching extends javax.swing.JPanel {
      */
     VehicleController vController;
 
+    DefaultTableModel dataModel;
+
     public PanelSearching(VehicleController vController) {
         this.vController = vController;
         initComponents();
+        dataModel = (DefaultTableModel) jTable1.getModel();
+        dataModel.setRowCount(0);
     }
 
     /**
@@ -191,8 +195,9 @@ public class PanelSearching extends javax.swing.JPanel {
 
         Vehicle data = Searching.search(vController.getDatas(), nopol, false);
         if (data == null) {
-            JOptionPane.showMessageDialog(this, "Data tidak ada");
+            JOptionPane.showMessageDialog(this, "Data tidak ditemukan");
         } else {
+            JOptionPane.showMessageDialog(this, "Data ditemukan");
             txtNopol1.setText("");
             txtNopol2.setText("");
             txtNopol3.setText("");
@@ -241,11 +246,9 @@ public class PanelSearching extends javax.swing.JPanel {
 
     // Lemot karena query
     private void updateTable(Vehicle vehicle) {
-        DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
-        dataModel.setRowCount(0);
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime());
-        dataModel.addRow(new Object[] {vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp});
+        dataModel.addRow(new Object[]{vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp});
     }
 
     // Membuat kelas yang meng-override kelas AbstractDocument
