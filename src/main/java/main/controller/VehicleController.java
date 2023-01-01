@@ -122,14 +122,24 @@ public class VehicleController {
         return vehicles;
     }
     
-    public Vehicle getData(String nopol) throws Exception {
+    public Vehicle getData(String nopol) {
         // ini bisa pakai binary search
         for (int i = 0; i <= top; i++) {
             if (arr[i].getNopol().equals(nopol)) {
                 return arr[i];
             }
         }
-        throw new Exception("Data tidak ada");
+        return null;
+    }
+
+    public Vehicle getData(int id) {
+        // ini bisa pakai binary search
+        for (int i = 0; i <= top; i++) {
+            if (arr[i].getId() == id) {
+                return arr[i];
+            }
+        }
+        return null;
     }
 
     public boolean isExist(String nopol) {

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.MainFrame;
 import okhttp3.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
@@ -127,12 +128,14 @@ public class Login extends javax.swing.JFrame {
                         new MainFrame().setVisible(true);
                     }
                 });
+                response.close();
             } else {
                 throw new Exception("Tidak ter-autentikasi");
             }
 
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
+            JOptionPane.showMessageDialog(this, exception.getMessage());
         }
     }//GEN-LAST:event_logginButtonActionPerformed
 

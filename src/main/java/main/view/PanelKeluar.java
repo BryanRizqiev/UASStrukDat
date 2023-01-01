@@ -1,9 +1,11 @@
 package main.view;
 
+import java.awt.*;
 import java.net.IDN;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -244,11 +246,27 @@ public class PanelKeluar extends javax.swing.JPanel {
                     return;
                 }
 
+                Timestamp now = new Timestamp(System.currentTimeMillis());
+                now.setHours(now.getHours() - 7);
+
+                Vehicle vehicle = vController.getData(id);
+                vehicle.setOutTime(now);
+                boolean printIt = JOptionPane.showConfirmDialog(this, "Kendaraan berhasil keluar, cetak?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                if (printIt) {
+                    EventQueue.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Popup(vehicle).setVisible(true);
+                        }
+                    });
+                }
+
                 SQLCommand.updateIsOut(id, vController);
                 JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
                 SQLCommand.getAllIsOut(listsIsOut);
                 updateTable();
                 txtNoKarcis.setText("");
+                buttonGroup1.clearSelection();
             } catch (Exception exception) {
                 System.out.println(exception.getMessage());
                 JOptionPane.showMessageDialog(this, exception.getMessage());
@@ -265,13 +283,27 @@ public class PanelKeluar extends javax.swing.JPanel {
                     return;
                 }
 
+                Timestamp now = new Timestamp(System.currentTimeMillis());
+                now.setHours(now.getHours() - 7);
+
+                Vehicle vehicle = vController.getData(nopol);
+                vehicle.setOutTime(now);
                 SQLCommand.updateIsOut(nopol, vController);
-                JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
+                boolean printIt = JOptionPane.showConfirmDialog(this, "Kendaraan berhasil keluar, cetak?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                if (printIt) {
+                    EventQueue.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Popup(vehicle).setVisible(true);
+                        }
+                    });
+                }
                 SQLCommand.getAllIsOut(listsIsOut);
                 updateTable();
                 txtNopol1.setText("");
                 txtNopol2.setText("");
                 txtNopol3.setText("");
+                buttonGroup1.clearSelection();
             } catch (Exception exception) {
                 System.out.println(exception.getMessage());
                 JOptionPane.showMessageDialog(this, exception.getMessage());
