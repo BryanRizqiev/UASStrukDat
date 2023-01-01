@@ -19,7 +19,7 @@ public class SQLCommand {
     private static final String SELECT_ONE_QUERY_BY_NOPOL = "SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1;";
     private static final String SELECT_ONE_QUERY_BY_ID = "SELECT * FROM vehicles WHERE id = ? AND is_out = 0 LIMIT 1;";
     private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
-    private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1 WHERE is_out = 0 AND id = ?;";
+    private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND id = ?;";
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -120,6 +120,7 @@ public class SQLCommand {
         }
     }
 
+    // harus di refactor di panel keluar agar tidak suka query
     public static void getAllIsOut(ArrayList<Vehicle> lists) throws Exception {
         try {
             lists.clear();
@@ -252,10 +253,15 @@ public class SQLCommand {
     }
 
     public static void updateIsOut(int id, VehicleController vController) throws Exception {
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        now.setHours(now.getHours() - 7);
+
         try {
             conn = JDBCUtil.getConnection();
             PreparedStatement stmnt = conn.prepareStatement(UPDATE_OUT_BY_ID);
-            stmnt.setInt(1, id);
+            stmnt.setTimestamp(1, now);
+            stmnt.setInt(2, id);
             int affected = stmnt.executeUpdate();
             if (affected == 0) {
                 throw new Exception("Tidak ada update");
@@ -269,6 +275,27 @@ public class SQLCommand {
         } catch (SQLException exception) {
             throw new Exception(exception.getMessage());
         }
+    }
+
+    public static boolean isDuplicateNopol(String nopol) throws Exception {
+        boolean isDuplicate = false;
+        try {
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement("SELECT id FROM vehicles WHERE nopol = ?;");
+            stmnt.setString(1, nopol);
+            ResultSet rs = stmnt.executeQuery();
+
+            rs.next();
+            if (rs.next()) {
+                isDuplicate = true;
+            }
+
+            stmnt.close();
+            conn.close();
+        } catch (SQLException exception) {
+            throw new Exception(exception.getMessage());
+        }
+        return isDuplicate;
     }
 
     // kurang refactor

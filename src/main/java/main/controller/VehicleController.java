@@ -133,9 +133,19 @@ public class VehicleController {
     }
 
     public boolean isExist(String nopol) {
-        // ini bisa pakai binary search
+        // ini bisa pakai searching
         for (int i = 0; i <= top; i++) {
             if (arr[i].getNopol().equals(nopol)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isExist(int id) {
+        // ini bisa pakai searching
+        for (int i = 0; i <= top; i++) {
+            if (arr[i].getId() == id) {
                 return true;
             }
         }

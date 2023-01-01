@@ -1,5 +1,6 @@
 package main.view;
 
+import java.net.IDN;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -217,29 +218,66 @@ public class PanelKeluar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
-
-        if (txtNopol1.getText().isEmpty() || txtNopol2.getText().isEmpty() || txtNopol3.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Isi semua form");
-            return;
-        }
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
 
-        if (!vController.isExist(nopol)) {
-            JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
-            return;
+        try {
+            if (SQLCommand.isDuplicateNopol(nopol)) {
+                JOptionPane.showMessageDialog(this, "Nopol ganda, harus mengisi berdasrkan no. karcis");
+                return;
+            }
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            JOptionPane.showMessageDialog(this, exception.getMessage());
         }
 
-        try {
-            SQLCommand.updateIsOut(nopol, vController);
-            JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
-            SQLCommand.getAllIsOut(listsIsOut);
-            updateTable();
-            txtNopol1.setText("");
-            txtNopol2.setText("");
-            txtNopol3.setText("");
-        } catch (Exception ex) {
-            Logger.getLogger(PanelKeluar.class.getName()).log(Level.SEVERE, null, ex);
+        // no karcis selected
+        if (jRadioButton1.isSelected()) {
+            try {
+                int id = Integer.parseInt(txtNoKarcis.getText());
+                if (txtNoKarcis.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Isi form no karcis");
+                    return;
+                }
+
+                if (!vController.isExist(id)) {
+                    JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
+                    return;
+                }
+
+                SQLCommand.updateIsOut(id, vController);
+                JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
+                SQLCommand.getAllIsOut(listsIsOut);
+                updateTable();
+                txtNoKarcis.setText("");
+            } catch (Exception exception) {
+                System.out.println(exception.getMessage());
+                JOptionPane.showMessageDialog(this, exception.getMessage());
+            }
+        } else if (jRadioButton2.isSelected()) {
+            try {
+                if (txtNopol1.getText().isEmpty() || txtNopol2.getText().isEmpty() || txtNopol3.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Isi semua form nopol");
+                    return;
+                }
+
+                if (!vController.isExist(nopol)) {
+                    JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
+                    return;
+                }
+
+                SQLCommand.updateIsOut(nopol, vController);
+                JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
+                SQLCommand.getAllIsOut(listsIsOut);
+                updateTable();
+                txtNopol1.setText("");
+                txtNopol2.setText("");
+                txtNopol3.setText("");
+            } catch (Exception exception) {
+                System.out.println(exception.getMessage());
+                JOptionPane.showMessageDialog(this, exception.getMessage());
+            }
         }
+
     }//GEN-LAST:event_btnOutActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -271,6 +309,7 @@ public class PanelKeluar extends javax.swing.JPanel {
 
     private void txtNoKarcisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoKarcisKeyTyped
         txtNopol1.setText(""); txtNopol2.setText(""); txtNopol3.setText("");
+        jRadioButton2.setSelected(false);
         jRadioButton1.setSelected(true);
         if (txtNoKarcis.getText().length() > 2) {
             evt.consume();
@@ -279,6 +318,7 @@ public class PanelKeluar extends javax.swing.JPanel {
 
     private void txtNopol1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyTyped
         txtNoKarcis.setText("");
+        jRadioButton1.setSelected(false);
         jRadioButton2.setSelected(true);
 
         char c = evt.getKeyChar();
