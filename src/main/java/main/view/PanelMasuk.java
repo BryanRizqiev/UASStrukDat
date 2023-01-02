@@ -468,13 +468,21 @@ public class PanelMasuk extends javax.swing.JPanel {
                 throw new IOException("Status >= 400");
             }
 
+            // bug di tampilan
+
             JSONObject obj = new JSONObject(response.body());
             String data = obj.getString("data");
 
+//            data = "<html>" + data + "</html>";
+//            if (data.length() > 115) {
+//                data = insertString(data, "<br><br>" , (int) (data.length() * 0.95));
+//            }
+
+            String finalData = data;
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    popupJokes(data);
+                    popupJokes(finalData);
                 }
             });
 
@@ -483,6 +491,19 @@ public class PanelMasuk extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public static String insertString(String originalString, String stringToBeInserted, int index) {
+        String newString = new String();
+
+        for (int i = 0; i < originalString.length(); i++) {
+            newString += originalString.charAt(i);
+            if (i == index) {
+                newString += stringToBeInserted;
+            }
+        }
+
+        return newString;
+    }
 
     private void popupJokes(String data) {
         PopupJokes popupJokes = new PopupJokes(data);

@@ -4,6 +4,9 @@
  */
 package main.view;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  *
  * @author bryan
@@ -16,6 +19,18 @@ public class PopupJokes extends javax.swing.JFrame {
     public PopupJokes(String data) {
         initComponents();
         jLabel1.setText(data);
+        Timer timer = new Timer("Timer");
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                disposeJframe();
+            }
+        };
+        timer.schedule(timerTask, 7000L);
+    }
+
+    private void disposeJframe() {
+        dispose();
     }
 
     public PopupJokes() {
@@ -43,16 +58,16 @@ public class PopupJokes extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
+                .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addContainerGap(584, Short.MAX_VALUE))
+                .addContainerGap(821, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
