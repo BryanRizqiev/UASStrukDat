@@ -1,7 +1,18 @@
 package main.view;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -14,6 +25,7 @@ import main.controller.VehicleController;
 import main.model.Vehicle;
 import main.utility.SQLCommand;
 import main.utility.Sorting;
+import org.json.JSONObject;
 
 public class PanelMasuk extends javax.swing.JPanel {
 
@@ -21,9 +33,11 @@ public class PanelMasuk extends javax.swing.JPanel {
      * Creates new form panelCreate
      */
     VehicleController vController;
+    ArrayList<Vehicle> listsIsOut;
 
-    public PanelMasuk(VehicleController vController) {
+    public PanelMasuk(VehicleController vController, ArrayList<Vehicle> listIsOut) {
         this.vController = vController;
+        this.listsIsOut = listIsOut;
         initComponents();
         labelCapacity.setText("Kapasitas : " + vController.count() + " / " + vController.size());
         updateTable();
@@ -59,12 +73,23 @@ public class PanelMasuk extends javax.swing.JPanel {
         labelNB1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         labelCapacity = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         menuItemLihat.setText("Lihat");
+        menuItemLihat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemLihatActionPerformed(evt);
+            }
+        });
         jPopupMenu1.add(menuItemLihat);
 
         menuItemKeluar.setText("Keluar");
         menuItemKeluar.setToolTipText("");
+        menuItemKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemKeluarActionPerformed(evt);
+            }
+        });
         jPopupMenu1.add(menuItemKeluar);
 
         btnReset.setText("Reset");
@@ -91,20 +116,20 @@ public class PanelMasuk extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Nama / Brand", "Waktu Masuk"
+                "Id", "Plat", "Tipe", "Warna", "Nama / Brand", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -124,13 +149,14 @@ public class PanelMasuk extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(70);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(90);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(30);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(70);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(90);
             jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(5).setResizable(false);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(250);
         }
 
         jLabel2.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
@@ -168,6 +194,13 @@ public class PanelMasuk extends javax.swing.JPanel {
         labelCapacity.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
         labelCapacity.setText("Kapasistas :");
 
+        jButton1.setText("Bosan?");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,17 +229,19 @@ public class PanelMasuk extends javax.swing.JPanel {
                                     .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2)))
                             .addComponent(labelTipe)
-                            .addComponent(labelWarna)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(labelNB1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(labelWarna))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelNB1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -238,7 +273,8 @@ public class PanelMasuk extends javax.swing.JPanel {
                     .addComponent(btnIn)
                     .addComponent(btnReset)
                     .addComponent(labelNB1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
                 .addContainerGap())
@@ -348,11 +384,111 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if (evt.getButton() == MouseEvent.BUTTON3) {
             int row = jTable1.rowAtPoint(evt.getPoint());
-            // milih 1 baris untuk di blok biru
+            // milih 1 baris dan akan di blok biru
             jTable1.setRowSelectionInterval(row, row);
             jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void menuItemLihatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLihatActionPerformed
+        int row = jTable1.getSelectedRow();
+        int id = (int) jTable1.getValueAt(row, 0);
+
+        Vehicle vehicle = vController.getData(id);
+
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Popup(vehicle).setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_menuItemLihatActionPerformed
+
+    private void menuItemKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemKeluarActionPerformed
+        int row = jTable1.getSelectedRow();
+
+        boolean continueIt = JOptionPane.showConfirmDialog(this, "Yakin mau mengeluarkan?", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        if (!continueIt) {
+            return;
+        }
+
+        int id = (int) jTable1.getValueAt(row, 0);
+        if (!vController.isExist(id)) {
+            JOptionPane.showMessageDialog(this, "Kendaraan tidak ada di parkiran");
+            return;
+        }
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        now.setHours(now.getHours() - 7);
+
+        Vehicle vehicle = vController.getData(id);
+        vehicle.setOutTime(now);
+        boolean printIt = JOptionPane.showConfirmDialog(this, "Kendaraan berhasil keluar, cetak?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        if (printIt) {
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new Popup(vehicle).setVisible(true);
+                }
+            });
+        }
+
+        try {
+            SQLCommand.updateIsOut(id, vController);
+            JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
+            SQLCommand.getAllIsOut(listsIsOut);
+            updateTable();
+        } catch (SQLException exception) {
+            System.out.println(exception.getMessage());
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }//GEN-LAST:event_menuItemKeluarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        HttpClient httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .connectTimeout(Duration.ofSeconds(10))
+                .build();
+
+        try {
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://candaan-api.vercel.app/api/text/random"))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .GET()
+                    .build();
+
+            var responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Ini sync");
+
+            var response = responseFuture.get();
+
+            if (response.statusCode() >= 400) {
+                throw new IOException("Status >= 400");
+            }
+
+            JSONObject obj = new JSONObject(response.body());
+            String data = obj.getString("data");
+
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    popupJokes(data);
+                }
+            });
+
+        } catch (IOException | InterruptedException | ExecutionException exception) {
+            System.out.println(exception.getMessage());
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void popupJokes(String data) {
+        PopupJokes popupJokes = new PopupJokes(data);
+        popupJokes.setLocationRelativeTo(this);
+        popupJokes.setVisible(true);
+    }
 
     private void updateTable() {
         try {
@@ -363,7 +499,7 @@ public class PanelMasuk extends javax.swing.JPanel {
 
             for (Vehicle data : vehicles) {
                 String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(data.getInTime());
-                dataModel.addRow(new Object[]{data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timestamp});
+                dataModel.addRow(new Object[] {data.getId(), data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timestamp});
             }
 
         } catch (Exception e) {
@@ -388,6 +524,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     private javax.swing.JButton btnIn;
     private javax.swing.JButton btnReset;
     private javax.swing.JComboBox<String> cbtipe;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPopupMenu jPopupMenu1;

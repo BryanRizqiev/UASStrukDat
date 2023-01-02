@@ -22,8 +22,16 @@ public class Popup extends javax.swing.JFrame {
         initComponents();
         labelNoKarcis.setText(String.valueOf(vehicle.getId())); labelNopol.setText(vehicle.getNopol()); labelTipe.setText(vehicle.getType()); labelWarna.setText(vehicle.getColor());
         labelNamaAtauBrand.setText((vehicle.getNameOrBrand().equals("")) ? "Tidak dicantumkan" : vehicle.getNameOrBrand()); labelTotalBayar.setText(String.valueOf(vehicle.getPay()));
-        labelWaktuMasuk.setText(new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime())); labelWaktuKeluar.setText(new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getOutTime()));
-        labelDicetakPada.setText("Dicetak pada : " + new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getOutTime()));
+        labelWaktuMasuk.setText(new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime()));
+        if (vehicle.isOut()) {
+            labelWaktuKeluar.setText(new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getOutTime()));
+            labelDicetakPada.setText("Dicetak pada : " + new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getOutTime()));
+        } else {
+            setTitle("Detail");
+            labelWaktuKeluar.setText("");
+            jLabel8.setText("");
+            jButton1.setVisible(false);
+        }
     }
 
     public Popup() {
@@ -58,7 +66,7 @@ public class Popup extends javax.swing.JFrame {
         labelWaktuKeluar = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cetak");
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
@@ -86,8 +94,6 @@ public class Popup extends javax.swing.JFrame {
         jLabel8.setText("Waktu keluar :");
 
         labelDicetakPada.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
-
-        labelWaktuKeluar.setText("jLabel9");
 
         jButton1.setText("Cetak");
 

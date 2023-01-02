@@ -120,7 +120,7 @@ public class SQLCommand {
     }
 
     // harus di refactor di panel keluar agar tidak suka query
-    public static void getAllIsOut(ArrayList<Vehicle> lists) throws Exception {
+    public static void getAllIsOut(ArrayList<Vehicle> lists) throws SQLException {
         try {
             lists.clear();
 
@@ -129,7 +129,7 @@ public class SQLCommand {
             ResultSet rs = stmnt.executeQuery();
 
             if (!rs.next()) {
-                throw new Exception("Data tidak ada");
+                throw new SQLException("Data tidak ada");
             }
 
             while (rs.next()) {
@@ -154,7 +154,7 @@ public class SQLCommand {
 
             System.out.println("Success get all datas is out");
         } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+            throw new SQLException(exception.getMessage());
         }
     }
 
@@ -251,7 +251,7 @@ public class SQLCommand {
         }
     }
 
-    public static void updateIsOut(int id, VehicleController vController) throws Exception {
+    public static void updateIsOut(int id, VehicleController vController) throws SQLException {
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         now.setHours(now.getHours() - 7);
@@ -263,7 +263,7 @@ public class SQLCommand {
             stmnt.setInt(2, id);
             int affected = stmnt.executeUpdate();
             if (affected == 0) {
-                throw new Exception("Tidak ada update");
+                throw new SQLException("Tidak ada update");
             }
 
             vController.pop(id);
@@ -271,8 +271,8 @@ public class SQLCommand {
             conn.close();
 
             System.out.println("Success");
-        } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+        } catch (Exception exception) {
+            throw new SQLException(exception.getMessage());
         }
     }
 

@@ -27,7 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
             SQLCommand.getAll(vehicleController);
             SQLCommand.getAllIsOut(vehiclesIsOut);
             allRecap = SQLCommand.getAllRecap();
-            src.setViewportView(new PanelMasuk(vehicleController));
+            src.setViewportView(new PanelMasuk(vehicleController, vehiclesIsOut));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -97,7 +97,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem3);
 
-        jMenuItem5.setText("Update data");
+        jMenuItem5.setText("Update / Delete data");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -122,7 +122,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
-            src.setViewportView(new PanelMasuk(vehicleController));
+            src.setViewportView(new PanelMasuk(vehicleController, vehiclesIsOut));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
