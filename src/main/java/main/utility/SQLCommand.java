@@ -1,6 +1,7 @@
 package main.utility;
 
 import main.controller.VehicleController;
+import main.model.Recap;
 import main.model.Vehicle;
 
 import java.sql.*;
@@ -13,7 +14,7 @@ public class SQLCommand {
 
     // benahin cronjob, jadi pakai tabel rekap, select is_out // benahin tabel
     private static Connection conn;
-    private static final String CREATE = "INSERT INTO vehicles (nopol, type, color, name_or_brand) VALUES (?, ?, ?, ?);";
+    private static final String CREATE = "INSERT INTO vehicles (nopol, type, color, name_or_brand, pay) VALUES (?, ?, ?, ?, ?);";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM vehicles WHERE is_out = 0 ORDER BY in_time ASC;";
     private static final String SELECT_ALL_QUERY_IS_OUT = "SELECT * FROM vehicles WHERE is_out = 1 ORDER BY in_time ASC;";
     private static final String SELECT_ONE_QUERY_BY_NOPOL = "SELECT * FROM vehicles WHERE nopol = ? AND is_out = 0 LIMIT 1;";
@@ -21,10 +22,7 @@ public class SQLCommand {
     private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
     private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND id = ?;";
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static Timestamp ts = new Timestamp(System.currentTimeMillis());
-
-    public static Vehicle create(String nopol, String type, String color, String name_or_brand, VehicleController vController) throws Exception {
+    public static Vehicle create(String nopol, String type, String color, String name_or_brand, int pay, VehicleController vController) throws Exception {
         if (vController.isFull()) {
             throw new Exception("Parkir penuh");
         }
@@ -37,6 +35,7 @@ public class SQLCommand {
             stmnt.setString(2, type);
             stmnt.setString(3, color);
             stmnt.setString(4, name_or_brand);
+            stmnt.setInt(5, pay);
             stmnt.executeUpdate();
 
             ResultSet rs = stmnt.getGeneratedKeys();
@@ -311,11 +310,30 @@ public class SQLCommand {
 
             totalRows = rs.getInt("total");
 
-            rs.close();
-            stmnt.close();
-            conn.close();
+            rs.close(); stmnt.close(); conn.close();
 
             return totalRows;
+        } catch (SQLException exception) {
+            throw new Exception(exception.getMessage());
+        }
+    }
+
+    public static Recap getAllRecap() throws Exception {
+
+        try {
+            conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement("SELECT * FROM recaps WHERE id = 1 LIMIT 1;");
+            ResultSet rs = stmnt.executeQuery();
+
+            if (!rs.next()) {
+                throw new Exception("Data tidak ada");
+            }
+
+            Recap recap = new Recap(rs.getInt("id"), rs.getInt("total_income"), rs.getInt("total_vehicle"), rs.getString("month"), rs.getInt("year"));
+            rs.close(); stmnt.close(); conn.close();
+
+            return recap;
+
         } catch (SQLException exception) {
             throw new Exception(exception.getMessage());
         }

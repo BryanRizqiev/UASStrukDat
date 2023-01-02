@@ -35,7 +35,7 @@ public class Testing {
             SQLCommand.getAll(vController);
 
             // in
-            SQLCommand.create("AG_0084_YNTKTS", "Motor", "Merah", "", vController);
+//            SQLCommand.create("AG_0084_YNTKTS", "Motor", "Merah", "", vController);
             vController.printArr();
 
             // query single

@@ -1,12 +1,10 @@
 package main.view;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -15,7 +13,6 @@ import javax.swing.text.PlainDocument;
 import main.controller.VehicleController;
 import main.model.Vehicle;
 import main.utility.SQLCommand;
-import main.utility.Searching;
 import main.utility.Sorting;
 
 public class PanelMasuk extends javax.swing.JPanel {
@@ -41,6 +38,9 @@ public class PanelMasuk extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        menuItemLihat = new javax.swing.JMenuItem();
+        menuItemKeluar = new javax.swing.JMenuItem();
         btnReset = new javax.swing.JButton();
         labelNopol = new javax.swing.JLabel();
         labelTipe = new javax.swing.JLabel();
@@ -59,6 +59,13 @@ public class PanelMasuk extends javax.swing.JPanel {
         labelNB1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         labelCapacity = new javax.swing.JLabel();
+
+        menuItemLihat.setText("Lihat");
+        jPopupMenu1.add(menuItemLihat);
+
+        menuItemKeluar.setText("Keluar");
+        menuItemKeluar.setToolTipText("");
+        jPopupMenu1.add(menuItemKeluar);
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +115,13 @@ public class PanelMasuk extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -192,10 +205,9 @@ public class PanelMasuk extends javax.swing.JPanel {
                                 .addComponent(labelNB1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,8 +270,11 @@ public class PanelMasuk extends javax.swing.JPanel {
             }
         }
 
+        String selected = (String) cbtipe.getSelectedItem();
+        int pay = (selected.equals("Motor")) ? 3000 : 5000;
+
         try {
-            SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), vController);
+            SQLCommand.create(nopol, tipe, warna, (!nameOrBrand.isEmpty() ? nameOrBrand : ""), pay, vController);
             JOptionPane.showMessageDialog(this, "Kendaraan berhasil parkir");
             updateTable();
 
@@ -269,6 +284,7 @@ public class PanelMasuk extends javax.swing.JPanel {
             cbtipe.setSelectedIndex(0);
             txtWarna.setText("");
             txtNB.setText("");
+            labelCapacity.setText("Kapasitas : " + vController.count() + " / " + vController.size());
         } catch (Exception ex) {
             Logger.getLogger(PanelMasuk.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -329,6 +345,15 @@ public class PanelMasuk extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtNopol1KeyTyped
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            int row = jTable1.rowAtPoint(evt.getPoint());
+            // milih 1 baris untuk di blok biru
+            jTable1.setRowSelectionInterval(row, row);
+            jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
     private void updateTable() {
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
@@ -365,6 +390,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbtipe;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelCapacity;
@@ -373,6 +399,8 @@ public class PanelMasuk extends javax.swing.JPanel {
     private javax.swing.JLabel labelNopol;
     private javax.swing.JLabel labelTipe;
     private javax.swing.JLabel labelWarna;
+    private javax.swing.JMenuItem menuItemKeluar;
+    private javax.swing.JMenuItem menuItemLihat;
     private javax.swing.JTextField txtNB;
     private javax.swing.JTextField txtNopol1;
     private javax.swing.JTextField txtNopol2;

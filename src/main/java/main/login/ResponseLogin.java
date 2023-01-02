@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResponseLogin {
 
-    boolean auth;
-    String message;
-    String token;
+    public boolean auth;
+    public String message;
+    public String token;
 
     public ResponseLogin(@JsonProperty("auth") boolean auth, @JsonProperty("message") String message, @JsonProperty("token") String token) {
         this.auth = auth;

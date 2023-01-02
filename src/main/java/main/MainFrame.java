@@ -1,17 +1,15 @@
 package main;
 
 import main.controller.VehicleController;
+import main.model.Recap;
 import main.model.Vehicle;
 import main.utility.SQLCommand;
-import main.view.PanelMasuk;
-import main.view.PanelKeluar;
+import main.view.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import main.view.PanelSearching;
-import main.view.PanelUpdate;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -21,12 +19,14 @@ public class MainFrame extends javax.swing.JFrame {
     // Mencoba
     VehicleController vehicleController = new VehicleController(100);
     ArrayList<Vehicle> vehiclesIsOut = new ArrayList<>();
+    Recap allRecap;
 
     public MainFrame() {
         initComponents();
         try {
             SQLCommand.getAll(vehicleController);
             SQLCommand.getAllIsOut(vehiclesIsOut);
+            allRecap = SQLCommand.getAllRecap();
             src.setViewportView(new PanelMasuk(vehicleController));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,9 +51,10 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("GUI Parkir Kendaraan");
+        setTitle("Parkir Kendaraan");
 
         src.setPreferredSize(new java.awt.Dimension(800, 800));
         getContentPane().add(src, java.awt.BorderLayout.CENTER);
@@ -80,7 +81,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenu2.setText("Data");
 
-        jMenuItem4.setText("Searching");
+        jMenuItem4.setText("Pencarian data");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -105,6 +106,14 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Rekap");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -139,6 +148,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         src.setViewportView(new PanelUpdate(vehicleController));
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        src.setViewportView(new PanelRekap(allRecap));
+    }//GEN-LAST:event_jMenu3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -189,6 +202,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
