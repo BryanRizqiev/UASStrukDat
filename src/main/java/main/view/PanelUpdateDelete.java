@@ -284,6 +284,9 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
 
                 btnResetActionPerformed(evt);
 
+                stmnt.close();
+                conn.close();
+
             } else {
 
             }
@@ -367,6 +370,9 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
                 }
 
                 btnResetActionPerformed(evt);
+
+                stmnt.close();
+                conn.close();
 
             } else {
 
