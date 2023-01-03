@@ -26,7 +26,7 @@ public class PopupJokes extends javax.swing.JFrame {
                 disposeJframe();
             }
         };
-        timer.schedule(timerTask, 7000L);
+        timer.schedule(timerTask, 10000L);
     }
 
     private void disposeJframe() {

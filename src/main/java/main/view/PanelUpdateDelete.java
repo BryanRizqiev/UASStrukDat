@@ -4,17 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import main.controller.VehicleController;
 import main.utility.JDBCUtil;
 
 public class PanelUpdateDelete extends javax.swing.JPanel {
@@ -236,6 +232,8 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
             txtNopol3.setText(split[2]);
             txtWarna.setText(warna);
             txtNB.setText(nb);
+
+            res.close(); stmnt.close(); conn.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(PanelUpdateDelete.class.getName()).log(Level.SEVERE, null, ex);
