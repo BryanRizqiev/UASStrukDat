@@ -146,7 +146,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        src.setViewportView(new PanelUpdate(vehicleController));
+        src.setViewportView(new PanelUpdateDelete(vehicleController));
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked

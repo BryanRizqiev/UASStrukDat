@@ -20,7 +20,7 @@ import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 import main.utility.Searching;
 
-public class PanelUpdate extends javax.swing.JPanel {
+public class PanelUpdateDelete extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
@@ -29,7 +29,7 @@ public class PanelUpdate extends javax.swing.JPanel {
 
     DefaultTableModel dataModel;
 
-    public PanelUpdate(VehicleController vController) {
+    public PanelUpdateDelete(VehicleController vController) {
         this.vController = vController;
         initComponents();
         dataModel = (DefaultTableModel) jTable1.getModel();
@@ -61,6 +61,7 @@ public class PanelUpdate extends javax.swing.JPanel {
         labelNB = new javax.swing.JLabel();
         txtNB = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(500, 520));
 
@@ -158,6 +159,14 @@ public class PanelUpdate extends javax.swing.JPanel {
             }
         });
 
+        btnDelete.setText("Delete");
+        btnDelete.setEnabled(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,23 +196,24 @@ public class PanelUpdate extends javax.swing.JPanel {
                                             .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
                                             .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(labelWarna, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(130, 130, 130)
-                                        .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(labelNB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))))))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(labelWarna, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(130, 130, 130)
+                                            .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(labelNB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addGap(18, 18, 18)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addGap(78, 78, 78)))
                             .addComponent(labelNopol1))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -214,10 +224,11 @@ public class PanelUpdate extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelNopol)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGet, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelNopol)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelNopol1)
@@ -235,7 +246,8 @@ public class PanelUpdate extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate)
-                    .addComponent(btnReset))
+                    .addComponent(btnReset)
+                    .addComponent(btnDelete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addContainerGap())
@@ -276,6 +288,7 @@ public class PanelUpdate extends javax.swing.JPanel {
             txtWarna.setEnabled(true);
             txtNB.setEnabled(true);
             btnUpdate.setEnabled(true);
+            btnDelete.setEnabled(true);
             txtId.setEnabled(false);
 
             txtNopol1.setText(split[0]);
@@ -285,7 +298,7 @@ public class PanelUpdate extends javax.swing.JPanel {
             txtNB.setText(nb);
 
         } catch (SQLException ex) {
-            Logger.getLogger(PanelUpdate.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelUpdateDelete.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGetActionPerformed
 
@@ -302,14 +315,16 @@ public class PanelUpdate extends javax.swing.JPanel {
 
             } else if (option == JOptionPane.YES_OPTION) {
 
-                String id = txtId.getText();
+                String id = txtId.getText(),
+                        warna = txtWarna.getText(),
+                        nb = txtNB.getText();
 
                 String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
                 Connection conn = JDBCUtil.getConnection();
                 PreparedStatement stmnt = conn.prepareStatement("UPDATE vehicles SET nopol = ?, color = ?, name_or_brand = ? WHERE id = ?");
                 stmnt.setString(1, nopol);
-                stmnt.setString(2, txtWarna.getText());
-                stmnt.setString(3, txtNB.getText());
+                stmnt.setString(2, warna);
+                stmnt.setString(3, nb);
                 stmnt.setInt(4, Integer.parseInt(id));
 
                 int excUpdate = stmnt.executeUpdate();
@@ -326,7 +341,7 @@ public class PanelUpdate extends javax.swing.JPanel {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(PanelUpdate.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PanelUpdateDelete.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -380,6 +395,40 @@ public class PanelUpdate extends javax.swing.JPanel {
         txtNB.setText("");
     }//GEN-LAST:event_btnResetActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        try {
+            String id = txtId.getText();
+
+            int option = JOptionPane.showConfirmDialog(this, "Data akan dihapus");
+            if (option == JOptionPane.NO_OPTION) {
+                JOptionPane.showMessageDialog(this, "Data tidak dihapus");
+
+            } else if (option == JOptionPane.YES_OPTION) {
+
+                String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
+                Connection conn = JDBCUtil.getConnection();
+                PreparedStatement stmnt = conn.prepareStatement("DELETE FROM vehicles WHERE id = ?");
+
+                stmnt.setInt(1, Integer.parseInt(id));
+
+                int excDelete = stmnt.executeUpdate();
+                if (excDelete == 1) {
+                    JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Data gagal dihapus");
+                }
+
+                btnResetActionPerformed(evt);
+
+            } else {
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelUpdateDelete.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     private void updateTable() {
 
     }
@@ -397,6 +446,7 @@ public class PanelUpdate extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnGet;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnUpdate;

@@ -310,7 +310,9 @@ public class SQLCommand {
 
             totalRows = rs.getInt("total");
 
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             return totalRows;
         } catch (SQLException exception) {
@@ -330,7 +332,9 @@ public class SQLCommand {
             }
 
             Recap recap = new Recap(rs.getInt("id"), rs.getInt("total_income"), rs.getInt("total_vehicle"), rs.getString("month"), rs.getInt("year"));
-            rs.close(); stmnt.close(); conn.close();
+            rs.close();
+            stmnt.close();
+            conn.close();
 
             return recap;
 

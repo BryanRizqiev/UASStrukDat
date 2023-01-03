@@ -97,20 +97,20 @@ public class PanelKeluar extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Bayar", "Waktu Keluar"
+                "Plat", "Tipe", "Warna", "Nama / Brand", "Bayar", "Waktu Keluar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -126,7 +126,8 @@ public class PanelKeluar extends javax.swing.JPanel {
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(250);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(175);
         }
 
         jLabel1.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
@@ -340,7 +341,9 @@ public class PanelKeluar extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNopol3KeyTyped
 
     private void txtNoKarcisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNoKarcisKeyTyped
-        txtNopol1.setText(""); txtNopol2.setText(""); txtNopol3.setText("");
+        txtNopol1.setText("");
+        txtNopol2.setText("");
+        txtNopol3.setText("");
         jRadioButton2.setSelected(false);
         jRadioButton1.setSelected(true);
         if (txtNoKarcis.getText().length() > 2) {

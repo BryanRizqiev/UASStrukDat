@@ -106,6 +106,7 @@ public class Vehicle {
         data.add(nopol);
         data.add(type);
         data.add(color);
+        data.add(nameOrBrand);
         data.add(pay);
         data.add((outTime == null) ? "" : new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(outTime));
         return data;
