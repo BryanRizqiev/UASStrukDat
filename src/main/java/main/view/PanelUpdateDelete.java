@@ -15,22 +15,14 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import main.controller.VehicleController;
-import main.model.Vehicle;
 import main.utility.JDBCUtil;
-import main.utility.SQLCommand;
-import main.utility.Searching;
 
 public class PanelUpdateDelete extends javax.swing.JPanel {
 
     /**
      * Creates new form panelCreate
      */
-    VehicleController vController;
-
-    DefaultTableModel dataModel;
-
-    public PanelUpdateDelete(VehicleController vController) {
-        this.vController = vController;
+    public PanelUpdateDelete() {
         initComponents();
     }
 
