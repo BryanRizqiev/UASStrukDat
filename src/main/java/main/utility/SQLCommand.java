@@ -82,7 +82,6 @@ public class SQLCommand {
     // rs.close() jangan lupa
     public static void getAll(VehicleController vController) throws Exception {
         try {
-            vController.clear();
             if (countData() > vController.size()) {
                 throw new Exception("Kapasitas tempat parkir (stack) tidak mencukupi");
             }
@@ -90,8 +89,22 @@ public class SQLCommand {
             PreparedStatement stmnt = conn.prepareStatement(SELECT_ALL_QUERY);
             ResultSet rs = stmnt.executeQuery();
 
-            if (!rs.next()) {
-                throw new Exception("Data tidak ada");
+            if (rs.next()) {
+                vController.clear();
+                if (vController.isFull()) {
+                    throw new Exception("Parkir penuh");
+                }
+                int kode = rs.getInt("id");
+                String nopol = rs.getString("nopol");
+                String type = rs.getString("type");
+                String color = rs.getString("color");
+                String nameOrBrand = (rs.getString("name_or_brand") == null ? "" : rs.getString("name_or_brand"));
+                int pay = rs.getInt("pay");
+                boolean isOut = rs.getBoolean("is_out");
+                Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
+                vController.push(new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime));
+            } else {
+                throw new Exception("Data dari database tidak ada");
             }
 
             while (rs.next()) {
@@ -109,9 +122,7 @@ public class SQLCommand {
                 vController.push(new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime));
             }
 
-            rs.close();
-            stmnt.close();
-            conn.close();
+            rs.close(); stmnt.close(); conn.close();
 
             System.out.println("Success get all datas");
         } catch (SQLException exception) {
