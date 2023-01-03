@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.login.Login;
+import main.login.ResponseLogin;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -194,7 +196,10 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                boolean auth = ResponseLogin.getAuth();
+                if (!auth) {
+                    new Login().setVisible(true);
+                }
             }
         });
     }

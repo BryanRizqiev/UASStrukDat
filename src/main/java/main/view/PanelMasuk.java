@@ -122,7 +122,7 @@ public class PanelMasuk extends javax.swing.JPanel {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Plat", "Tipe", "Warna", "Nama / Brand", "Waktu Masuk"
+                "ID", "Plat", "Tipe", "Warna", "Nama / Brand", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {

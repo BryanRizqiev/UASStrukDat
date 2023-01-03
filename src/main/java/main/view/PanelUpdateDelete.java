@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
@@ -20,6 +21,7 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
      */
     public PanelUpdateDelete() {
         initComponents();
+        updateTable();
     }
 
     /**
@@ -46,6 +48,8 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
         txtNB = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(500, 520));
 
@@ -115,6 +119,42 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
             }
         });
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Plat", "Warna", "Nama / Brand"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(30);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,6 +195,10 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
                                 .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1))))
                 .addContainerGap(158, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +230,9 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
                     .addComponent(btnUpdate)
                     .addComponent(btnReset)
                     .addComponent(btnDelete))
-                .addContainerGap(282, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         txtNopol1.setDocument(new UpperCaseDocument());
@@ -233,7 +279,9 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
             txtWarna.setText(warna);
             txtNB.setText(nb);
 
-            res.close(); stmnt.close(); conn.close();
+            res.close();
+            stmnt.close();
+            conn.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(PanelUpdateDelete.class.getName()).log(Level.SEVERE, null, ex);
@@ -273,6 +321,8 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
                 }
 
                 btnResetActionPerformed(evt);
+
+                updateTable();
 
                 stmnt.close();
                 conn.close();
@@ -326,6 +376,7 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
         txtWarna.setEnabled(false);
         txtNB.setEnabled(false);
         btnUpdate.setEnabled(false);
+        btnDelete.setEnabled(false);
         txtId.setEnabled(true);
 
         txtId.setText("");
@@ -361,6 +412,8 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
 
                 btnResetActionPerformed(evt);
 
+                updateTable();
+
                 stmnt.close();
                 conn.close();
 
@@ -374,7 +427,23 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void updateTable() {
+        try {
+            DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
+            dataModel.setRowCount(0);
 
+            Connection conn = JDBCUtil.getConnection();
+            PreparedStatement stmnt = conn.prepareStatement("SELECT * FROM vehicles");
+            ResultSet res = stmnt.executeQuery();
+
+            while (res.next()) {
+                dataModel.addRow(new Object[]{res.getInt("id"), res.getString("nopol"), res.getString("color"), res.getString("name_or_brand")});
+            }
+
+            stmnt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelUpdateDelete.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // Membuat kelas yang meng-override kelas AbstractDocument
@@ -395,6 +464,8 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelNB;
     private javax.swing.JLabel labelNopol;
     private javax.swing.JLabel labelNopol1;
