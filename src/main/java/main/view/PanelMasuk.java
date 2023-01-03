@@ -287,7 +287,6 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void btnInActionPerformed(java.awt.event.ActionEvent evt) {
 
         // blok kode dibawah ini berfungsi untuk insert ke tabel database dan meng-push data ke stack
-
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
                 warna = txtWarna.getText(),
@@ -329,7 +328,6 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
 
         // membersihkan textfield
-
         txtNopol1.setText("");
         txtNopol2.setText("");
         txtNopol3.setText("");
@@ -469,7 +467,6 @@ public class PanelMasuk extends javax.swing.JPanel {
             }
 
             // bug di tampilan
-
             JSONObject obj = new JSONObject(response.body());
             String data = obj.getString("data");
 
@@ -477,7 +474,6 @@ public class PanelMasuk extends javax.swing.JPanel {
 //            if (data.length() > 115) {
 //                data = insertString(data, "<br><br>" , (int) (data.length() * 0.95));
 //            }
-
             String finalData = data;
             EventQueue.invokeLater(new Runnable() {
                 @Override
@@ -520,7 +516,7 @@ public class PanelMasuk extends javax.swing.JPanel {
 
             for (Vehicle data : vehicles) {
                 String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(data.getInTime());
-                dataModel.addRow(new Object[] {data.getId(), data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timestamp});
+                dataModel.addRow(new Object[]{data.getId(), data.getNopol(), data.getType(), data.getColor(), data.getNameOrBrand(), timestamp});
             }
 
         } catch (Exception e) {
