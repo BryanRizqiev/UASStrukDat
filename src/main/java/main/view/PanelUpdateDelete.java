@@ -439,6 +439,7 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
                 dataModel.addRow(new Object[]{res.getInt("id"), res.getString("nopol"), res.getString("color"), res.getString("name_or_brand")});
             }
 
+            res.close();
             stmnt.close();
             conn.close();
         } catch (SQLException ex) {
