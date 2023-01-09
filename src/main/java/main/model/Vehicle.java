@@ -7,6 +7,8 @@ import java.util.Vector;
 // methodnya kurang
 public class Vehicle {
 
+    // model kendaraan
+
     private int id;
     private String nopol;
     private String type;
@@ -17,7 +19,6 @@ public class Vehicle {
     private Timestamp inTime;
     private Timestamp outTime;
 
-    // isOut little bit useless
     public Vehicle(int id, String nopol, String type, String color, String nameOrBrand, int pay, boolean isOut, Timestamp inTime) {
         this.id = id;
         this.nopol = nopol;
@@ -116,5 +117,4 @@ public class Vehicle {
     public String toString() {
         return this.nopol;
     }
-
 }

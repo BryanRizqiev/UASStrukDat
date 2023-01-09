@@ -18,12 +18,15 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    // Mencoba
+
     VehicleController vehicleController = new VehicleController(100);
     ArrayList<Vehicle> vehiclesIsOut = new ArrayList<>();
     Recap allRecap;
 
     public MainFrame() {
+
+        // membaca data dari database lalu memasukkannya kedalam memory
+
         initComponents();
         try {
             SQLCommand.getAll(vehicleController);
@@ -196,10 +199,7 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                boolean auth = ResponseLogin.getAuth();
-                if (!auth) {
-                    new Login().setVisible(true);
-                }
+                new Login().setVisible(true);
             }
         });
     }

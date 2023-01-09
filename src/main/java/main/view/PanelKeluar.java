@@ -1,14 +1,8 @@
 package main.view;
 
 import java.awt.*;
-import java.net.IDN;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
@@ -17,7 +11,6 @@ import javax.swing.text.PlainDocument;
 
 import main.controller.VehicleController;
 import main.model.Vehicle;
-import main.utility.JDBCUtil;
 import main.utility.SQLCommand;
 
 public class PanelKeluar extends javax.swing.JPanel {
@@ -221,6 +214,9 @@ public class PanelKeluar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
+
+        // mengeluarkan kendaraan dari stack maupun database
+
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
 
         try {
@@ -228,9 +224,9 @@ public class PanelKeluar extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Nopol ganda, harus mengisi berdasrkan no. karcis");
                 return;
             }
-        } catch (Exception exception) {
+        } catch (SQLException exception) {
             System.out.println(exception.getMessage());
-            JOptionPane.showMessageDialog(this, exception.getMessage());
+            JOptionPane.showMessageDialog(this, "Error");
         }
 
         // no karcis selected
@@ -270,7 +266,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                 buttonGroup1.clearSelection();
             } catch (Exception exception) {
                 System.out.println(exception.getMessage());
-                JOptionPane.showMessageDialog(this, exception.getMessage());
+                JOptionPane.showMessageDialog(this, "Error");
             }
         } else if (jRadioButton2.isSelected()) {
             try {
@@ -307,7 +303,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                 buttonGroup1.clearSelection();
             } catch (Exception exception) {
                 System.out.println(exception.getMessage());
-                JOptionPane.showMessageDialog(this, exception.getMessage());
+                JOptionPane.showMessageDialog(this, "Error");
             }
         }
 
@@ -366,8 +362,10 @@ public class PanelKeluar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtNopol1KeyTyped
 
-    // Lemot karena query
     private void updateTable() {
+
+        // mengupdate tabel
+
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
@@ -381,7 +379,7 @@ public class PanelKeluar extends javax.swing.JPanel {
         }
     }
 
-    // Membuat kelas yang meng-override kelas AbstractDocument
+    // membuat kelas yang meng-override kelas AbstractDocument
     public static class UpperCaseDocument extends PlainDocument {
 
         @Override

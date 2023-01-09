@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 public class SQLCommand {
 
-    // benahin cronjob, jadi pakai tabel rekap, select is_out // benahin tabel
     private static Connection conn;
     private static final String CREATE = "INSERT INTO vehicles (nopol, type, color, name_or_brand, pay) VALUES (?, ?, ?, ?, ?);";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM vehicles WHERE is_out = 0 ORDER BY in_time ASC;";
@@ -22,9 +21,12 @@ public class SQLCommand {
     private static final String UPDATE_OUT_BY_NOPOL = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND nopol = ? LIMIT 1;";
     private static final String UPDATE_OUT_BY_ID = "UPDATE vehicles SET is_out = 1, out_time = ? WHERE is_out = 0 AND id = ?;";
 
-    public static Vehicle create(String nopol, String type, String color, String name_or_brand, int pay, VehicleController vController) throws Exception {
+    public static Vehicle create(String nopol, String type, String color, String name_or_brand, int pay, VehicleController vController) throws SQLException {
+
+        // memasukkan data kendaraan ke stack, database dan mengembalikan data kendaraan yang dimasukkan
+
         if (vController.isFull()) {
-            throw new Exception("Parkir penuh");
+            throw new SQLException("Parkir penuh");
         }
         try {
             Vehicle vehicle;
@@ -40,10 +42,9 @@ public class SQLCommand {
 
             ResultSet rs = stmnt.getGeneratedKeys();
             if (rs.next()) {
-                // get id and get by id
                 vehicle = getById(rs.getInt(1));
             } else {
-                throw new Exception("Tidak tau error apa");
+                throw new SQLException("Tidak tau error apa");
             }
 
             rs.close();
@@ -53,12 +54,15 @@ public class SQLCommand {
             vController.push(vehicle);
 
             return vehicle;
-        } catch (SQLException exception) {
-            throw new Exception(exception);
+        } catch (Exception exception) {
+            throw new SQLException(exception);
         }
     }
 
     public static boolean isExist(String nopol) {
+
+        // memriksa apakah kendaraan ada di database dengan memasukkan parameter nopol
+
         try {
             conn = JDBCUtil.getConnection();
             PreparedStatement stmnt = conn.prepareStatement(SELECT_ONE_QUERY_BY_NOPOL);
@@ -79,11 +83,13 @@ public class SQLCommand {
         }
     }
 
-    // rs.close() jangan lupa
-    public static void getAll(VehicleController vController) throws Exception {
+    public static void getAll(VehicleController vController) throws SQLException {
+
+        // mengambil semua data kendaraan dari database lalu memasukkannya kedalam stack
+
         try {
             if (countData() > vController.size()) {
-                throw new Exception("Kapasitas tempat parkir (stack) tidak mencukupi");
+                throw new SQLException("Kapasitas tempat parkir (stack) tidak mencukupi");
             }
             conn = JDBCUtil.getConnection();
             PreparedStatement stmnt = conn.prepareStatement(SELECT_ALL_QUERY);
@@ -92,7 +98,7 @@ public class SQLCommand {
             if (rs.next()) {
                 vController.clear();
                 if (vController.isFull()) {
-                    throw new Exception("Parkir penuh");
+                    throw new SQLException("Parkir penuh");
                 }
                 int kode = rs.getInt("id");
                 String nopol = rs.getString("nopol");
@@ -104,12 +110,12 @@ public class SQLCommand {
                 Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
                 vController.push(new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime));
             } else {
-                throw new Exception("Data dari database tidak ada");
+                throw new SQLException("Data dari database tidak ada");
             }
 
             while (rs.next()) {
                 if (vController.isFull()) {
-                    throw new Exception("Parkir penuh");
+                    throw new SQLException("Parkir penuh");
                 }
                 int kode = rs.getInt("id");
                 String nopol = rs.getString("nopol");
@@ -125,13 +131,16 @@ public class SQLCommand {
             rs.close(); stmnt.close(); conn.close();
 
             System.out.println("Success get all datas");
-        } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+        } catch (Exception exception) {
+            throw new SQLException(exception);
         }
     }
 
     // harus di refactor di panel keluar agar tidak suka query
     public static void getAllIsOut(ArrayList<Vehicle> lists) throws SQLException {
+
+        // mengambil semua data kendaraan yang sudah keluar
+
         try {
             lists.clear();
 
@@ -139,7 +148,21 @@ public class SQLCommand {
             PreparedStatement stmnt = conn.prepareStatement(SELECT_ALL_QUERY_IS_OUT);
             ResultSet rs = stmnt.executeQuery();
 
-            if (!rs.next()) {
+            if (rs.next())  {
+                int kode = rs.getInt("id");
+                String nopol = rs.getString("nopol");
+                String type = rs.getString("type");
+                String color = rs.getString("color");
+                String nameOrBrand = (rs.getString("name_or_brand") == null ? "" : rs.getString("name_or_brand"));
+                int pay = rs.getInt("pay");
+                boolean isOut = rs.getBoolean("is_out");
+                Timestamp inTime = Timestamp.valueOf(rs.getString("in_time"));
+                String outTimeStr = rs.getString("out_time");
+                Timestamp outTime = (outTimeStr == null) ? null : Timestamp.valueOf(outTimeStr);
+                Vehicle vehicle = new Vehicle(kode, nopol, type, color, nameOrBrand, pay, isOut, inTime);
+                vehicle.setOutTime(outTime);
+                lists.add(vehicle);
+            } else {
                 throw new SQLException("Data tidak ada");
             }
 
@@ -165,11 +188,14 @@ public class SQLCommand {
 
             System.out.println("Success get all datas is out");
         } catch (SQLException exception) {
-            throw new SQLException(exception.getMessage());
+            throw new SQLException(exception);
         }
     }
 
-    public static Vehicle getByNopol(String nopolParam) throws Exception {
+    public static Vehicle getByNopol(String nopolParam) throws SQLException {
+
+        // mengambil data kendaraan berdasarkan nopol, lalu memasukannya kedalam model Vehicle dan mengembalikannya
+
         Vehicle vehicle;
         try {
             conn = JDBCUtil.getConnection();
@@ -178,7 +204,7 @@ public class SQLCommand {
             ResultSet rs = stmnt.executeQuery();
 
             if (!rs.next()) {
-                throw new Exception("Data tidak ada");
+                throw new SQLException("Data tidak ada");
             }
 
             int kode = rs.getInt("id");
@@ -197,11 +223,14 @@ public class SQLCommand {
 
             return vehicle;
         } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+            throw new SQLException(exception);
         }
     }
 
-    public static Vehicle getById(int id) throws Exception {
+    public static Vehicle getById(int id) throws SQLException {
+
+        // mengambil data kendaraan berdasarkan id, lalu memasukannya kedalam model Vehicle dan mengembalikannya
+
         Vehicle vehicle;
         try {
             conn = JDBCUtil.getConnection();
@@ -210,7 +239,7 @@ public class SQLCommand {
             ResultSet rs = stmnt.executeQuery();
 
             if (!rs.next()) {
-                throw new Exception("Data tidak ada");
+                throw new SQLException("Data tidak ada");
             }
 
             int kode = rs.getInt("id");
@@ -229,7 +258,7 @@ public class SQLCommand {
 
             return vehicle;
         } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+            throw new SQLException(exception);
         }
     }
 
@@ -237,7 +266,9 @@ public class SQLCommand {
 
     }
 
-    public static void updateIsOut(String nopol, VehicleController vController) throws Exception {
+    public static void updateIsOut(String nopol, VehicleController vController) throws SQLException {
+
+        // menngeluarkan kendaraan berdasarkan nopol dan pop kendaraan tersebut dari stack
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         now.setHours(now.getHours() - 7);
@@ -249,7 +280,7 @@ public class SQLCommand {
             stmnt.setString(2, nopol);
             int affected = stmnt.executeUpdate();
             if (affected == 0) {
-                throw new Exception("Tidak ada update");
+                throw new SQLException("Tidak ada update");
             }
 
             vController.pop(nopol);
@@ -257,12 +288,14 @@ public class SQLCommand {
             conn.close();
 
             System.out.println("Success");
-        } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+        } catch (Exception exception) {
+            throw new SQLException(exception);
         }
     }
 
     public static void updateIsOut(int id, VehicleController vController) throws SQLException {
+
+        // menngeluarkan kendaraan berdasarkan id dan pop kendaraan tersebut dari stack
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         now.setHours(now.getHours() - 7);
@@ -283,11 +316,14 @@ public class SQLCommand {
 
             System.out.println("Success");
         } catch (Exception exception) {
-            throw new SQLException(exception.getMessage());
+            throw new SQLException(exception);
         }
     }
 
-    public static boolean isDuplicateNopol(String nopol) throws Exception {
+    public static boolean isDuplicateNopol(String nopol) throws SQLException {
+
+        // mengecek apakah ada baris yang memiliki nopol yang sama di database dan mengembalikan boolean
+
         boolean isDuplicate = false;
         try {
             conn = JDBCUtil.getConnection();
@@ -303,20 +339,23 @@ public class SQLCommand {
             stmnt.close();
             conn.close();
         } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+            throw new SQLException(exception);
         }
         return isDuplicate;
     }
 
     // kurang refactor
-    public static int countData() throws Exception {
+    public static int countData() throws SQLException {
+
+        // menghitung semua baris di tabel vehicles
+
         int totalRows;
         try {
             conn = JDBCUtil.getConnection();
             PreparedStatement stmnt = conn.prepareStatement("SELECT COUNT(id) AS total FROM vehicles WHERE is_out = 0;");
             ResultSet rs = stmnt.executeQuery();
             if (!rs.next()) {
-                throw new Exception("Tidak tau error apa");
+                throw new SQLException("Tidak tau error apa");
             }
 
             totalRows = rs.getInt("total");
@@ -327,11 +366,13 @@ public class SQLCommand {
 
             return totalRows;
         } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+            throw new SQLException(exception);
         }
     }
 
     public static Recap getAllRecap() throws Exception {
+
+        // mengambil data rekap semua bulan dan tahun
 
         try {
             conn = JDBCUtil.getConnection();
@@ -350,7 +391,7 @@ public class SQLCommand {
             return recap;
 
         } catch (SQLException exception) {
-            throw new Exception(exception.getMessage());
+            throw new SQLException(exception);
         }
     }
 }

@@ -286,7 +286,8 @@ public class PanelMasuk extends javax.swing.JPanel {
 
     private void btnInActionPerformed(java.awt.event.ActionEvent evt) {
 
-        // blok kode dibawah ini berfungsi untuk insert ke tabel database dan meng-push data ke stack
+        // blok kode dibawah ini berfungsi untuk insert ke tabel database dan meng-push data kedalam stack
+
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText(),
                 tipe = String.valueOf(cbtipe.getSelectedItem()),
                 warna = txtWarna.getText(),
@@ -328,6 +329,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
 
         // membersihkan textfield
+
         txtNopol1.setText("");
         txtNopol2.setText("");
         txtNopol3.setText("");
@@ -338,7 +340,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         String choise = (String) jComboBox1.getSelectedItem();
 
-        if (choise.equals("Plat") || choise.equals("Tipe") || choise.equals("Warna")) {
+        if (choise.equals("Plat")) {
             Sorting.sort(vController.getDatas());
             updateTable();
         } else {
@@ -382,7 +384,6 @@ public class PanelMasuk extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if (evt.getButton() == MouseEvent.BUTTON3) {
             int row = jTable1.rowAtPoint(evt.getPoint());
-            // milih 1 baris dan akan di blok biru
             jTable1.setRowSelectionInterval(row, row);
             jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
         }
@@ -443,6 +444,9 @@ public class PanelMasuk extends javax.swing.JPanel {
     }//GEN-LAST:event_menuItemKeluarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        // mengirim request untuk mendapatkan jokes
+
         HttpClient httpClient = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_2)
                 .connectTimeout(Duration.ofSeconds(10))
@@ -470,15 +474,10 @@ public class PanelMasuk extends javax.swing.JPanel {
             JSONObject obj = new JSONObject(response.body());
             String data = obj.getString("data");
 
-//            data = "<html>" + data + "</html>";
-//            if (data.length() > 115) {
-//                data = insertString(data, "<br><br>" , (int) (data.length() * 0.95));
-//            }
-            String finalData = data;
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    popupJokes(finalData);
+                    popupJokes(data);
                 }
             });
 
@@ -508,6 +507,9 @@ public class PanelMasuk extends javax.swing.JPanel {
     }
 
     private void updateTable() {
+
+        // mengupdate tabel
+
         try {
             DefaultTableModel dataModel = (DefaultTableModel) jTable1.getModel();
             dataModel.setRowCount(0);
@@ -525,7 +527,7 @@ public class PanelMasuk extends javax.swing.JPanel {
         }
     }
 
-    // Membuat kelas yang meng-override kelas AbstractDocument
+    // membuat kelas yang meng-override kelas AbstractDocument
     public static class UpperCaseDocument extends PlainDocument {
 
         @Override

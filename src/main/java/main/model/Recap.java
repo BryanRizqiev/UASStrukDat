@@ -2,6 +2,8 @@ package main.model;
 
 public class Recap {
 
+    // Model rekap
+
     private int id;
     private int totalIncome;
     private int totalVehicles;

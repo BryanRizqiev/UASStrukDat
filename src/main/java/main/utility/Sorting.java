@@ -64,8 +64,8 @@ public class Sorting {
 
         if (start < end) {
             int pivot = partitionSortTime(arr, start, end);
-            quickSort(arr, start, pivot-1);
-            quickSort(arr, pivot+1, end);
+            quickSortTime(arr, start, pivot-1);
+            quickSortTime(arr, pivot+1, end);
         }
     }
 
@@ -111,7 +111,6 @@ public class Sorting {
         int length = VehicleController.lengthArr(vehicles);
 
         if (vehicles.length > 100) {
-            // data sedikit kurang ke sort kalau data sedikit?
             quickSortTime(vehicles, 0, length-1);
         } else {
             insertionSortTime(vehicles, length);

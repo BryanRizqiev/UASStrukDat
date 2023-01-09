@@ -17,6 +17,9 @@ public class PopupJokes extends javax.swing.JFrame {
      * Creates new form PopupJokes
      */
     public PopupJokes(String data) {
+
+        // menampilkan popup jokes
+
         initComponents();
         jLabel1.setText(data);
         Timer timer = new Timer("Timer");

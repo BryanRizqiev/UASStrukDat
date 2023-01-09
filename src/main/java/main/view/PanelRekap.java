@@ -35,6 +35,9 @@ public class PanelRekap extends javax.swing.JPanel {
     }
 
     public PanelRekap(Recap allRecap) {
+
+        // menampilkan rekap
+
         this.allRecap = allRecap;
         initComponents();
         labelPendapatan.setText(toRupiah(this.allRecap.getTotalIncome()));
@@ -59,7 +62,7 @@ public class PanelRekap extends javax.swing.JPanel {
 
         jLabel9.setText("Total pendapatan :");
 
-        jLabel10.setText("Total kendaraan yang pernah parkir :");
+        jLabel10.setText("Total kendaraan keluar parkir :");
 
         labelPendapatan.setText("<empty>");
 
@@ -89,7 +92,7 @@ public class PanelRekap extends javax.swing.JPanel {
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
                         .addComponent(labelPendapatan)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

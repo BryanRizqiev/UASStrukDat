@@ -6,6 +6,9 @@ import main.model.Vehicle;
 public class Searching {
 
     public static Vehicle binarySearch(Vehicle[] vehicles, String key, int length) {
+
+        // method binary search mengembalikan model Vehicle
+
         int first = 0, last = length - 1;
         while (first <= last) {
             int mid = first + (last - first) / 2;
@@ -14,7 +17,6 @@ public class Searching {
             if (result == 0) {
                 return vehicles[mid];
             }
-            // penentu asc sort or desc sort
             if (result > 0) {
                 first = mid + 1;
             } else {
@@ -25,6 +27,9 @@ public class Searching {
     }
 
     public static Vehicle linearSearch(Vehicle[] vehicles, String key, int length) {
+
+        // method lienear search mengembalikan model Vehicle
+
         for (int i = 0; i < length; i++) {
             if (vehicles[i].getNopol().equals(key)) {
                 return vehicles[i];
@@ -34,6 +39,8 @@ public class Searching {
     }
 
     public static Vehicle search(Vehicle[] vehicles, String nopol, boolean isSort) {
+
+        // method utama search dimana menentukan algoritma searching yang akan dipakai, parameter isSort berguna untuk mengetahui apakah array sudah disorting
 
         int length = VehicleController.lengthArr(vehicles);
 
@@ -48,6 +55,8 @@ public class Searching {
     }
 
     public static Vehicle search(Vehicle[] vehicles, String nopol) {
+
+        // method utama search dimana menentukan algoritma searching yang akan dipakai
 
         int length = VehicleController.lengthArr(vehicles);
 

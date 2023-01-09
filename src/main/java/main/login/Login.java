@@ -96,7 +96,9 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logginButtonActionPerformed
-        // kurang pakai yang async
+
+        // mengirim request api server untuk mendapat autentikasi
+
         OkHttpClient client = new OkHttpClient();
 
         RequestBody formBody = new FormBody.Builder()
@@ -130,12 +132,12 @@ public class Login extends javax.swing.JFrame {
                 });
                 response.close();
             } else {
-                throw new Exception("Tidak ter-autentikasi");
+                throw new IOException("Tidak ter-autentikasi");
             }
 
-        } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            JOptionPane.showMessageDialog(this, exception.getMessage());
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Tidak ter-autentikasi");
         }
     }//GEN-LAST:event_logginButtonActionPerformed
 

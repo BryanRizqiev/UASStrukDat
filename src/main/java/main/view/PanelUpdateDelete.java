@@ -260,7 +260,11 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Data ditemukan");
 
             String nopol = res.getString("nopol");
+            // get data no polisi
             String[] split = nopol.split("_");
+            // hasil nopol cth: AG_2522_IJO
+            // lalu di pecah menjadi array yang nantinya di inputkan ke form input nopol1, nopol2, nopol3
+            // hasil array [AG, 2522, IJO]
             String nb = res.getString("name_or_brand"),
                     warna = res.getString("color");
 
@@ -342,10 +346,12 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
         if (Character.isDigit(c)) {
             evt.consume();
         }
+        // event validasi hanya huruf pada form inputan nopol
         if (txtNopol1.getText().length() > 1) {
             evt.consume();
             txtNopol2.requestFocus();
         }
+        //jika pada form input nopol pertama lebih dari 2 huruf maka akan otomatis pindah ke form input selanjutnya
     }//GEN-LAST:event_txtNopol1KeyTyped
 
     private void txtNopol2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol2KeyTyped
@@ -353,6 +359,7 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
         if (!(Character.isDigit(c) || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
             evt.consume();
         }
+        // event validasi hanya angka pada form inputan nopol 2
         if (txtNopol2.getText().length() == 4) {
             evt.consume();
             txtNopol3.requestFocus();
@@ -385,6 +392,7 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
         txtNopol3.setText("");
         txtWarna.setText("");
         txtNB.setText("");
+        // mengosongkan semua form inputan
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -438,6 +446,7 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
             while (res.next()) {
                 dataModel.addRow(new Object[]{res.getInt("id"), res.getString("nopol"), res.getString("color"), res.getString("name_or_brand")});
             }
+            // memasukkan data ke jTable java swing gui
 
             res.close();
             stmnt.close();
@@ -447,9 +456,9 @@ public class PanelUpdateDelete extends javax.swing.JPanel {
         }
     }
 
-    // Membuat kelas yang meng-override kelas AbstractDocument
+    // membuat kelas yang meng-override kelas AbstractDocument
     public static class UpperCaseDocument extends PlainDocument {
-
+        // mengubah huruf jadi besar semua
         @Override
         public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
             if (str == null) {

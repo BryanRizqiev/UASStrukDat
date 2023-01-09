@@ -20,6 +20,9 @@ public class Popup extends javax.swing.JFrame {
      */
     public Popup(Vehicle vehicle) {
         initComponents();
+
+        // menampilkan nota
+
         labelNoKarcis.setText(String.valueOf(vehicle.getId())); labelNopol.setText(vehicle.getNopol()); labelTipe.setText(vehicle.getType()); labelWarna.setText(vehicle.getColor());
         labelNamaAtauBrand.setText((vehicle.getNameOrBrand().equals("")) ? "Tidak dicantumkan" : vehicle.getNameOrBrand()); labelTotalBayar.setText(String.valueOf(vehicle.getPay()));
         labelWaktuMasuk.setText(new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime()));
