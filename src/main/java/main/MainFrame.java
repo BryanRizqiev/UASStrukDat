@@ -6,19 +6,16 @@ import main.model.Vehicle;
 import main.utility.SQLCommand;
 import main.view.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.login.Login;
-import main.login.ResponseLogin;
 
 public class MainFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form MainFrame
      */
-
     VehicleController vehicleController = new VehicleController(100);
     ArrayList<Vehicle> vehiclesIsOut = new ArrayList<>();
     Recap allRecap;
@@ -26,7 +23,6 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
 
         // membaca data dari database lalu memasukkannya kedalam memory
-
         initComponents();
         try {
             SQLCommand.getAll(vehicleController);
