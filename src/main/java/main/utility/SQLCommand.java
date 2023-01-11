@@ -136,7 +136,6 @@ public class SQLCommand {
         }
     }
 
-    // harus di refactor di panel keluar agar tidak suka query
     public static void getAllIsOut(ArrayList<Vehicle> lists) throws SQLException {
 
         // mengambil semua data kendaraan yang sudah keluar
