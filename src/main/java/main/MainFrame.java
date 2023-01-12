@@ -11,11 +11,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.login.Login;
 
+import javax.swing.*;
+
 public class MainFrame extends javax.swing.JFrame {
+
+    private void showMessageDialog(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
 
     /**
      * Creates new form MainFrame
      */
+
     VehicleController vehicleController = new VehicleController(100);
     ArrayList<Vehicle> vehiclesIsOut = new ArrayList<>();
     Recap allRecap;
@@ -28,7 +35,7 @@ public class MainFrame extends javax.swing.JFrame {
             SQLCommand.getAll(vehicleController);
             SQLCommand.getAllIsOut(vehiclesIsOut);
             allRecap = SQLCommand.getAllRecap();
-            src.setViewportView(new PanelMasuk(vehicleController, vehiclesIsOut));
+            src.setViewportView(new PanelMasuk(this, vehicleController, vehiclesIsOut));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -123,7 +130,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
-            src.setViewportView(new PanelMasuk(vehicleController, vehiclesIsOut));
+            src.setViewportView(new PanelMasuk(this, vehicleController, vehiclesIsOut));
         } catch (Exception ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -138,12 +145,30 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        try {
-            SQLCommand.getAll(vehicleController);
-            SQLCommand.getAllIsOut(vehiclesIsOut);
-        } catch (Exception ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        jMenuItem3.setEnabled(false);
+            SwingWorker<Boolean, Object> worker = new SwingWorker<>() {
+                @Override
+                protected Boolean doInBackground() throws Exception {
+                    try {
+                        Thread.sleep(2500);
+                        SQLCommand.getAll(vehicleController);
+                        SQLCommand.getAllIsOut(vehiclesIsOut);
+                        allRecap = SQLCommand.getAllRecap();
+                        return true;
+                    } catch (Exception ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    return false;
+                }
+
+                @Override
+                protected void done() {
+                    showMessageDialog("Data berhasil di-singkronkan");
+                    jMenuItem3.setEnabled(true);
+                }
+            };
+
+            worker.execute();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed

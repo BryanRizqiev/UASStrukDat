@@ -13,14 +13,13 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import main.MainFrame;
 import main.controller.VehicleController;
 import main.model.Vehicle;
 import main.utility.SQLCommand;
@@ -29,13 +28,20 @@ import org.json.JSONObject;
 
 public class PanelMasuk extends javax.swing.JPanel {
 
+    private void showPopup(Vehicle vehicle) {
+        Popup popup = new Popup(vehicle);
+        popup.setLocationRelativeTo(this);
+        popup.setVisible(true);
+    }
+
     /**
      * Creates new form panelCreate
      */
+
     VehicleController vController;
     ArrayList<Vehicle> listsIsOut;
 
-    public PanelMasuk(VehicleController vController, ArrayList<Vehicle> listIsOut) {
+    public PanelMasuk(MainFrame mainFrame, VehicleController vController, ArrayList<Vehicle> listIsOut) {
         this.vController = vController;
         this.listsIsOut = listIsOut;
         initComponents();
@@ -74,6 +80,7 @@ public class PanelMasuk extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         labelCapacity = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        btnUbahKapasitas = new javax.swing.JButton();
 
         menuItemLihat.setText("Lihat");
         menuItemLihat.addActionListener(new java.awt.event.ActionListener() {
@@ -201,6 +208,13 @@ public class PanelMasuk extends javax.swing.JPanel {
             }
         });
 
+        btnUbahKapasitas.setText("Ubah kapasitas");
+        btnUbahKapasitas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahKapasitasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -208,30 +222,32 @@ public class PanelMasuk extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelNopol)
-                                    .addComponent(labelNB))
-                                .addGap(46, 46, 46)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(labelCapacity))
-                                    .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2)))
-                            .addComponent(labelTipe)
-                            .addComponent(labelWarna))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(labelNopol)
+                                .addComponent(labelNB))
+                            .addGap(46, 46, 46)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtNB, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtWarna, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(18, 18, 18)
+                                    .addComponent(labelCapacity)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnUbahKapasitas))))
+                        .addComponent(labelTipe)
+                        .addComponent(labelWarna))
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnIn, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -255,7 +271,8 @@ public class PanelMasuk extends javax.swing.JPanel {
                     .addComponent(txtNopol1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNopol2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNopol3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCapacity))
+                    .addComponent(labelCapacity)
+                    .addComponent(btnUbahKapasitas))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbtipe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -321,8 +338,9 @@ public class PanelMasuk extends javax.swing.JPanel {
             txtWarna.setText("");
             txtNB.setText("");
             labelCapacity.setText("Kapasitas : " + vController.count() + " / " + vController.size());
-        } catch (Exception ex) {
-            Logger.getLogger(PanelMasuk.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception exc) {
+            JOptionPane.showMessageDialog(this, "Error");
+            exc.printStackTrace();
         }
     }
 
@@ -398,7 +416,7 @@ public class PanelMasuk extends javax.swing.JPanel {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Popup(vehicle).setVisible(true);
+                showPopup(vehicle);
             }
         });
     }//GEN-LAST:event_menuItemLihatActionPerformed
@@ -423,11 +441,12 @@ public class PanelMasuk extends javax.swing.JPanel {
         Vehicle vehicle = vController.getData(id);
         vehicle.setOutTime(now);
         boolean printIt = JOptionPane.showConfirmDialog(this, "Kendaraan berhasil keluar, cetak?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+
         if (printIt) {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new Popup(vehicle).setVisible(true);
+                    showPopup(vehicle);
                 }
             });
         }
@@ -436,6 +455,7 @@ public class PanelMasuk extends javax.swing.JPanel {
             SQLCommand.updateIsOut(id, vController);
             JOptionPane.showMessageDialog(this, "Kendaraan telah keluar dari parkiran");
             SQLCommand.getAllIsOut(listsIsOut);
+            labelCapacity.setText("Kapasitas : " + vController.count() + " / " + vController.size());
             updateTable();
         } catch (SQLException exception) {
             System.out.println(exception.getMessage());
@@ -486,6 +506,18 @@ public class PanelMasuk extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Terjadi kesalahan");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnUbahKapasitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahKapasitasActionPerformed
+        try {
+            int newCapacity = Integer.parseInt(JOptionPane.showInputDialog(this, "Masukkan kapasitas yang baru"));
+            vController.changeCapacity(newCapacity);
+            SQLCommand.getAll(vController);
+            labelCapacity.setText("Kapasitas : " + vController.count() + " / " + vController.size());
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }//GEN-LAST:event_btnUbahKapasitasActionPerformed
 
     public static String insertString(String originalString, String stringToBeInserted, int index) {
         String newString = new String();
@@ -542,6 +574,7 @@ public class PanelMasuk extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIn;
     private javax.swing.JButton btnReset;
+    private javax.swing.JButton btnUbahKapasitas;
     private javax.swing.JComboBox<String> cbtipe;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;

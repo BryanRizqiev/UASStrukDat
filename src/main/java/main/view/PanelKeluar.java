@@ -15,9 +15,16 @@ import main.utility.SQLCommand;
 
 public class PanelKeluar extends javax.swing.JPanel {
 
+    private void showPopup(Vehicle vehicle) {
+        Popup popup = new Popup(vehicle);
+        popup.setLocationRelativeTo(this);
+        popup.setVisible(true);
+    }
+
     /**
      * Creates new form panelCreate
      */
+
     VehicleController vController;
     ArrayList<Vehicle> listsIsOut;
 
@@ -253,7 +260,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                     EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            new Popup(vehicle).setVisible(true);
+                            showPopup(vehicle);
                         }
                     });
                 }
@@ -291,7 +298,7 @@ public class PanelKeluar extends javax.swing.JPanel {
                     EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            new Popup(vehicle).setVisible(true);
+                            showPopup(vehicle);
                         }
                     });
                 }

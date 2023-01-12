@@ -1,10 +1,13 @@
 package main.view;
 
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,9 +24,16 @@ import main.utility.Searching;
 
 public class PanelSearching extends javax.swing.JPanel {
 
+    private void showPopup(Vehicle vehicle) {
+        Popup popup = new Popup(vehicle);
+        popup.setLocationRelativeTo(this);
+        popup.setVisible(true);
+    }
+
     /**
      * Creates new form panelCreate
      */
+
     VehicleController vController;
 
     DefaultTableModel dataModel;
@@ -44,6 +54,8 @@ public class PanelSearching extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu = new javax.swing.JPopupMenu();
+        lihatMenuItem = new javax.swing.JMenuItem();
         labelNopol = new javax.swing.JLabel();
         txtNopol1 = new javax.swing.JTextField();
         txtNopol2 = new javax.swing.JTextField();
@@ -53,6 +65,14 @@ public class PanelSearching extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+
+        lihatMenuItem.setText("Lihat");
+        lihatMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lihatMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(lihatMenuItem);
 
         setPreferredSize(new java.awt.Dimension(500, 520));
 
@@ -92,23 +112,23 @@ public class PanelSearching extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Plat", "Tipe", "Warna", "Bayar", "Waktu Masuk"
+                "Id", "Plat", "Tipe", "Warna", "Bayar", "Waktu Masuk"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -119,13 +139,21 @@ public class PanelSearching extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowHeight(50);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(70);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(70);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(70);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(150);
         }
 
         jLabel1.setFont(new java.awt.Font("Inter", 0, 18)); // NOI18N
@@ -193,7 +221,9 @@ public class PanelSearching extends javax.swing.JPanel {
         }
         String nopol = txtNopol1.getText() + "_" + txtNopol2.getText() + "_" + txtNopol3.getText();
 
-        Vehicle data = Searching.search(vController.getDatas(), nopol, false);
+        System.out.println(vController.getData(nopol));
+
+        Vehicle data = Searching.search(vController.fetchDatas(), nopol, false);
         if (data == null) {
             JOptionPane.showMessageDialog(this, "Data tidak ditemukan");
         } else {
@@ -210,6 +240,7 @@ public class PanelSearching extends javax.swing.JPanel {
         txtNopol1.setText("");
         txtNopol2.setText("");
         txtNopol3.setText("");
+        dataModel.setRowCount(0);
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void txtNopol1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNopol1KeyTyped
@@ -242,12 +273,37 @@ public class PanelSearching extends javax.swing.JPanel {
         if (txtNopol3.getText().length() > 2) {
             evt.consume();
         }
+        if (c == '\n') {
+            btnSearchActionPerformed(null);
+        }
     }//GEN-LAST:event_txtNopol3KeyTyped
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            int row = jTable1.rowAtPoint(evt.getPoint());
+            jTable1.setRowSelectionInterval(row, row);
+            popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void lihatMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lihatMenuItemActionPerformed
+        int row = jTable1.getSelectedRow();
+        int id = (int) jTable1.getValueAt(row, 0);
+
+        Vehicle vehicle = vController.getData(id);
+
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                showPopup(vehicle);
+            }
+        });
+    }//GEN-LAST:event_lihatMenuItemActionPerformed
 
     private void updateTable(Vehicle vehicle) {
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss").format(vehicle.getInTime());
-        dataModel.addRow(new Object[]{vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp});
+        dataModel.addRow(new Object[] { vehicle.getId(), vehicle.getNopol(), vehicle.getType(), vehicle.getColor(), vehicle.getPay(), timestamp });
     }
 
     // Membuat kelas yang meng-override kelas AbstractDocument
@@ -269,6 +325,8 @@ public class PanelSearching extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelNopol;
+    private javax.swing.JMenuItem lihatMenuItem;
+    private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTextField txtNopol1;
     private javax.swing.JTextField txtNopol2;
     private javax.swing.JTextField txtNopol3;

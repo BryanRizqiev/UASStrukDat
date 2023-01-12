@@ -184,6 +184,12 @@ public class VehicleController {
         System.out.println();
     }
 
+    public void changeCapacity(int newCapacity) {
+        arr = new Vehicle[capacity];
+        capacity = newCapacity;
+
+    }
+
     // meng-print di console semua data array dalam stack, ini berguna saat development maupun debugging
     public void printArr() {
         System.out.println(Arrays.toString(arr));
@@ -197,6 +203,8 @@ public class VehicleController {
             if (vehicle == null) {
                 length = i;
                 break;
+            } else {
+                length = i + 1;
             }
             i++;
         }
